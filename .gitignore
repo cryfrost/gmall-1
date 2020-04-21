@@ -1,3 +1,6 @@
+.idea/
+target/
+#.gitignore
 # Compiled class file
 *.class
 
