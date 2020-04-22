@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
@@ -44,7 +45,7 @@ public class UndoLog implements Serializable {
 	 * 
 	 */
 	@ApiModelProperty(name = "rollbackInfo",value = "")
-	private unknowType rollbackInfo;
+	private String rollbackInfo;
 	/**
 	 * 
 	 */
