@@ -1,0 +1,45 @@
+server:
+  port: 8888
+
+# \u7F51\u5173\u914D\u7F6E
+spring:
+  cloud:
+    gateway:
+      #\u914D\u7F6E\u8DEF\u7531\u89C4\u5219
+      routes:
+        #\u91C7\u7528\u81EA\u5B9A\u4E49\u8DEF\u7531ID\uFF08\u6709\u56FA\u5B9A\u7528\u6CD5\uFF0C\u4E0D\u540C\u7684id\u6709\u4E0D\u540C\u7684\u529F\u80FD
+        - id: pms-route
+          #\u91C7\u7528LoadBalanceClient\u65B9\u5F0F\u8BF7\u6C42\uFF0C\u4EE5lb://\u5F00\u5934\uFF0C\u540E\u9762\u7684\u662F\u6CE8\u518C\u5728Nacos\u4E0A\u7684\u670D\u52A1\u540D
+          uri: lb://pms-service
+          predicates:
+            # \u914D\u7F6E\u5BF9\u4E8E\u8BF7\u6C42\u8DEF\u5F84\u7684\u5339\u914D\u89C4\u5219
+            - Path=/pms/**
+        - id: sms-route
+          #\u91C7\u7528LoadBalanceClient\u65B9\u5F0F\u8BF7\u6C42\uFF0C\u4EE5lb://\u5F00\u5934\uFF0C\u540E\u9762\u7684\u662F\u6CE8\u518C\u5728Nacos\u4E0A\u7684\u670D\u52A1\u540D
+          uri: lb://sms-service
+          predicates:
+            # \u914D\u7F6E\u5BF9\u4E8E\u8BF7\u6C42\u8DEF\u5F84\u7684\u5339\u914D\u89C4\u5219
+            - Path=/sms/**
+        - id: oms-route
+          #\u91C7\u7528LoadBalanceClient\u65B9\u5F0F\u8BF7\u6C42\uFF0C\u4EE5lb://\u5F00\u5934\uFF0C\u540E\u9762\u7684\u662F\u6CE8\u518C\u5728Nacos\u4E0A\u7684\u670D\u52A1\u540D
+          uri: lb://oms-service
+          predicates:
+            # \u914D\u7F6E\u5BF9\u4E8E\u8BF7\u6C42\u8DEF\u5F84\u7684\u5339\u914D\u89C4\u5219
+            - Path=/oms/**
+        - id: wms-route
+          #\u91C7\u7528LoadBalanceClient\u65B9\u5F0F\u8BF7\u6C42\uFF0C\u4EE5lb://\u5F00\u5934\uFF0C\u540E\u9762\u7684\u662F\u6CE8\u518C\u5728Nacos\u4E0A\u7684\u670D\u52A1\u540D
+          uri: lb://wms-service
+          predicates:
+            # \u914D\u7F6E\u5BF9\u4E8E\u8BF7\u6C42\u8DEF\u5F84\u7684\u5339\u914D\u89C4\u5219
+            - Path=/wms/**
+        - id: ums-route
+          #\u91C7\u7528LoadBalanceClient\u65B9\u5F0F\u8BF7\u6C42\uFF0C\u4EE5lb://\u5F00\u5934\uFF0C\u540E\u9762\u7684\u662F\u6CE8\u518C\u5728Nacos\u4E0A\u7684\u670D\u52A1\u540D
+          uri: lb://ums-service
+          predicates:
+            # \u914D\u7F6E\u5BF9\u4E8E\u8BF7\u6C42\u8DEF\u5F84\u7684\u5339\u914D\u89C4\u5219
+            - Path=/ums/**
+    # \u914D\u7F6E nacos
+    nacos:
+      discovery:
+        server-addr: 122.51.113.141:8848
+
