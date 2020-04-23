@@ -1,10 +1,10 @@
 spring:
   application:
-    name: pms-service
+    name: sms-service
   cloud:
     nacos:
       config:
         server-addr: 122.51.113.141:8848
-        namespace: 3561a796-a32e-4c4d-8425-9eba6c592fec
+        namespace: 09244239-3d12-4373-b872-07f13c00b48b
         group: dev
         file-extension: yml
