@@ -40,13 +40,14 @@ public class Query<T> {
         }
 
         //分页对象
-        Page<T> page = new Page<>(curPage, limit);
+        Page<T> page = new Page<T>(curPage, limit);
 
         //分页参数
 //        params.put(Constant.PAGE, page);
 
         //排序字段
-        //防止SQL注入（因为sidx、order是通过拼接SQL实现排序的，会有SQL注入风险）
+        //防止SQL注入（因为sidx、order是通过拼接SQL实现排序的，会有S
+        // QL注入风险）
         String orderField = SQLFilter.sqlInject(params.getSidx());
         String order = params.getOrder();
 
