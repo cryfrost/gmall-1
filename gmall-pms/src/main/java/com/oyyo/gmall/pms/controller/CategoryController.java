@@ -1,22 +1,18 @@
 package com.oyyo.gmall.pms.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.entity.CategoryEntity;
+import com.oyyo.gmall.pms.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.pms.entity.CategoryEntity;
-import com.oyyo.gmall.pms.service.CategoryService;
-
-
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -32,6 +28,15 @@ import com.oyyo.gmall.pms.service.CategoryService;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    @GetMapping
+    public Resp<List<CategoryEntity>> queryCategoriesByPidOrLevel(
+            @RequestParam(value = "level",defaultValue = "0")Integer level,
+            @RequestParam(value = "parentCid",required = false)Long pid){
+//        categoryService.
+
+        return Resp.ok(null);
+    }
 
     /**
      * 列表
