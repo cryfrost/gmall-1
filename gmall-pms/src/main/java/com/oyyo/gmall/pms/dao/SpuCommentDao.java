@@ -1,15 +1,17 @@
 package com.oyyo.gmall.pms.dao;
 
-import com.oyyo.gmall.pms.entity.SpuComment;
+import com.oyyo.gmall.pms.entity.SpuCommentEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 商品评价
+ * 
  * @author oy
- * @since  2020-04-21 16:16:47
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Mapper
-public interface SpuCommentDao extends BaseMapper<SpuComment> {
+public interface SpuCommentDao extends BaseMapper<SpuCommentEntity> {
 	
 }

@@ -1,24 +1,27 @@
 package com.oyyo.gmall.pms.service.impl;
 
+import org.springframework.stereotype.Service;
+import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.Query;
 import com.oyyo.core.bean.QueryCondition;
+
 import com.oyyo.gmall.pms.dao.BrandDao;
-import com.oyyo.gmall.pms.entity.Brand;
+import com.oyyo.gmall.pms.entity.BrandEntity;
 import com.oyyo.gmall.pms.service.BrandService;
-import org.springframework.stereotype.Service;
+
 
 @Service("brandService")
-public class BrandServiceImpl extends ServiceImpl<BrandDao, Brand> implements BrandService {
+public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
 
     @Override
     public PageVo queryPage(QueryCondition params) {
-        IPage<Brand> page = this.page(
-                new Query<Brand>().getPage(params),
-                new QueryWrapper<>()
+        IPage<BrandEntity> page = this.page(
+                new Query<BrandEntity>().getPage(params),
+                new QueryWrapper<BrandEntity>()
         );
 
         return new PageVo(page);

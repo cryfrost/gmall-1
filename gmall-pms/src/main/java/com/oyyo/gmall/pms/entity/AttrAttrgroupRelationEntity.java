@@ -4,19 +4,21 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 属性&属性分组关联
+ * 
  * @author oy
- * @since 2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:39
  */
 @ApiModel
 @Data
 @TableName("pms_attr_attrgroup_relation")
-public class AttrAttrgroupRelation implements Serializable {
+public class AttrAttrgroupRelationEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -1,24 +1,27 @@
 package com.oyyo.gmall.pms.service.impl;
 
+import org.springframework.stereotype.Service;
+import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.Query;
 import com.oyyo.core.bean.QueryCondition;
+
 import com.oyyo.gmall.pms.dao.CommentReplayDao;
-import com.oyyo.gmall.pms.entity.CommentReplay;
+import com.oyyo.gmall.pms.entity.CommentReplayEntity;
 import com.oyyo.gmall.pms.service.CommentReplayService;
-import org.springframework.stereotype.Service;
+
 
 @Service("commentReplayService")
-public class CommentReplayServiceImpl extends ServiceImpl<CommentReplayDao, CommentReplay> implements CommentReplayService {
+public class CommentReplayServiceImpl extends ServiceImpl<CommentReplayDao, CommentReplayEntity> implements CommentReplayService {
 
     @Override
     public PageVo queryPage(QueryCondition params) {
-        IPage<CommentReplay> page = this.page(
-                new Query<CommentReplay>().getPage(params),
-                new QueryWrapper<>()
+        IPage<CommentReplayEntity> page = this.page(
+                new Query<CommentReplayEntity>().getPage(params),
+                new QueryWrapper<CommentReplayEntity>()
         );
 
         return new PageVo(page);

@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.SkuSaleAttrValue;
-import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.SkuSaleAttrValueEntity;
+import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
+
+
+
 
 /**
  * sku销售属性&值
+ *
  * @author oy
- * @since  2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Api(tags = "sku销售属性&值 管理")
 @RestController
@@ -44,8 +52,8 @@ public class SkuSaleAttrValueController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('pms:skusaleattrvalue:info')")
-    public Resp<SkuSaleAttrValue> info(@PathVariable("id") Long id){
-		SkuSaleAttrValue skuSaleAttrValue = skuSaleAttrValueService.getById(id);
+    public Resp<SkuSaleAttrValueEntity> info(@PathVariable("id") Long id){
+		SkuSaleAttrValueEntity skuSaleAttrValue = skuSaleAttrValueService.getById(id);
 
         return Resp.ok(skuSaleAttrValue);
     }
@@ -56,7 +64,7 @@ public class SkuSaleAttrValueController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:skusaleattrvalue:save')")
-    public Resp<Object> save(@RequestBody SkuSaleAttrValue skuSaleAttrValue){
+    public Resp<Object> save(@RequestBody SkuSaleAttrValueEntity skuSaleAttrValue){
 		skuSaleAttrValueService.save(skuSaleAttrValue);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class SkuSaleAttrValueController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:skusaleattrvalue:update')")
-    public Resp<Object> update(@RequestBody SkuSaleAttrValue skuSaleAttrValue){
+    public Resp<Object> update(@RequestBody SkuSaleAttrValueEntity skuSaleAttrValue){
 		skuSaleAttrValueService.updateById(skuSaleAttrValue);
 
         return Resp.ok(null);

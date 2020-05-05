@@ -1,17 +1,19 @@
 package com.oyyo.gmall.pms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.oyyo.gmall.pms.entity.ProductAttrValueEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
-import com.oyyo.gmall.pms.entity.ProductAttrValue;
+
 
 /**
  * spu属性值
  *
  * @author oy
- * @since  2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
-public interface ProductAttrValueService extends IService<ProductAttrValue> {
+public interface ProductAttrValueService extends IService<ProductAttrValueEntity> {
 
     PageVo queryPage(QueryCondition params);
 }

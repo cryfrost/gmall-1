@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.AttrGroup;
-import com.oyyo.gmall.pms.service.AttrGroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.AttrGroupEntity;
+import com.oyyo.gmall.pms.service.AttrGroupService;
+
+
+
 
 /**
  * 属性分组
+ *
  * @author oy
- * @since  2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:39
  */
 @Api(tags = "属性分组 管理")
 @RestController
@@ -44,8 +52,8 @@ public class AttrGroupController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{attrGroupId}")
     @PreAuthorize("hasAuthority('pms:attrgroup:info')")
-    public Resp<AttrGroup> info(@PathVariable("attrGroupId") Long attrGroupId){
-		AttrGroup attrGroup = attrGroupService.getById(attrGroupId);
+    public Resp<AttrGroupEntity> info(@PathVariable("attrGroupId") Long attrGroupId){
+		AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
 
         return Resp.ok(attrGroup);
     }
@@ -56,7 +64,7 @@ public class AttrGroupController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:attrgroup:save')")
-    public Resp<Object> save(@RequestBody AttrGroup attrGroup){
+    public Resp<Object> save(@RequestBody AttrGroupEntity attrGroup){
 		attrGroupService.save(attrGroup);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class AttrGroupController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:attrgroup:update')")
-    public Resp<Object> update(@RequestBody AttrGroup attrGroup){
+    public Resp<Object> update(@RequestBody AttrGroupEntity attrGroup){
 		attrGroupService.updateById(attrGroup);
 
         return Resp.ok(null);

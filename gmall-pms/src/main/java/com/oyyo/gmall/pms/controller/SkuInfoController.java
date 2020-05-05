@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.SkuInfo;
-import com.oyyo.gmall.pms.service.SkuInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.SkuInfoEntity;
+import com.oyyo.gmall.pms.service.SkuInfoService;
+
+
+
 
 /**
  * sku信息
+ *
  * @author oy
- * @since  2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Api(tags = "sku信息 管理")
 @RestController
@@ -44,8 +52,8 @@ public class SkuInfoController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{skuId}")
     @PreAuthorize("hasAuthority('pms:skuinfo:info')")
-    public Resp<SkuInfo> info(@PathVariable("skuId") Long skuId){
-		SkuInfo skuInfo = skuInfoService.getById(skuId);
+    public Resp<SkuInfoEntity> info(@PathVariable("skuId") Long skuId){
+		SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
 
         return Resp.ok(skuInfo);
     }
@@ -56,7 +64,7 @@ public class SkuInfoController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:skuinfo:save')")
-    public Resp<Object> save(@RequestBody SkuInfo skuInfo){
+    public Resp<Object> save(@RequestBody SkuInfoEntity skuInfo){
 		skuInfoService.save(skuInfo);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class SkuInfoController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:skuinfo:update')")
-    public Resp<Object> update(@RequestBody SkuInfo skuInfo){
+    public Resp<Object> update(@RequestBody SkuInfoEntity skuInfo){
 		skuInfoService.updateById(skuInfo);
 
         return Resp.ok(null);

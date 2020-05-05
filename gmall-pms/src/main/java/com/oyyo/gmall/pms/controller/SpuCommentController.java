@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.SpuComment;
-import com.oyyo.gmall.pms.service.SpuCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.SpuCommentEntity;
+import com.oyyo.gmall.pms.service.SpuCommentService;
+
+
+
 
 /**
  * 商品评价
+ *
  * @author oy
- * @since  2020-04-21 16:16:47
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Api(tags = "商品评价 管理")
 @RestController
@@ -44,8 +52,8 @@ public class SpuCommentController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('pms:spucomment:info')")
-    public Resp<SpuComment> info(@PathVariable("id") Long id){
-		SpuComment spuComment = spuCommentService.getById(id);
+    public Resp<SpuCommentEntity> info(@PathVariable("id") Long id){
+		SpuCommentEntity spuComment = spuCommentService.getById(id);
 
         return Resp.ok(spuComment);
     }
@@ -56,7 +64,7 @@ public class SpuCommentController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:spucomment:save')")
-    public Resp<Object> save(@RequestBody SpuComment spuComment){
+    public Resp<Object> save(@RequestBody SpuCommentEntity spuComment){
 		spuCommentService.save(spuComment);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class SpuCommentController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:spucomment:update')")
-    public Resp<Object> update(@RequestBody SpuComment spuComment){
+    public Resp<Object> update(@RequestBody SpuCommentEntity spuComment){
 		spuCommentService.updateById(spuComment);
 
         return Resp.ok(null);

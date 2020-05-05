@@ -3,7 +3,7 @@ package com.oyyo.gmall.pms.controller;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.AttrAttrgroupRelation;
+import com.oyyo.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.oyyo.gmall.pms.service.AttrAttrgroupRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
+
+
+
 /**
  * 属性&属性分组关联
+ *
  * @author oy
- * @since  2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:39
  */
 @Api(tags = "属性&属性分组关联 管理")
 @RestController
@@ -44,8 +49,8 @@ public class AttrAttrgroupRelationController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('pms:attrattrgrouprelation:info')")
-    public Resp<AttrAttrgroupRelation> info(@PathVariable("id") Long id){
-		AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationService.getById(id);
+    public Resp<AttrAttrgroupRelationEntity> info(@PathVariable("id") Long id){
+		AttrAttrgroupRelationEntity attrAttrgroupRelation = attrAttrgroupRelationService.getById(id);
 
         return Resp.ok(attrAttrgroupRelation);
     }
@@ -56,7 +61,7 @@ public class AttrAttrgroupRelationController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:attrattrgrouprelation:save')")
-    public Resp<Object> save(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation){
+    public Resp<Object> save(@RequestBody AttrAttrgroupRelationEntity attrAttrgroupRelation){
 		attrAttrgroupRelationService.save(attrAttrgroupRelation);
 
         return Resp.ok(null);
@@ -68,7 +73,7 @@ public class AttrAttrgroupRelationController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:attrattrgrouprelation:update')")
-    public Resp<Object> update(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation){
+    public Resp<Object> update(@RequestBody AttrAttrgroupRelationEntity attrAttrgroupRelation){
 		attrAttrgroupRelationService.updateById(attrAttrgroupRelation);
 
         return Resp.ok(null);

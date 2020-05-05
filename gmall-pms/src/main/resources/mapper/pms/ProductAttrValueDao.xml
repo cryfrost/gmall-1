@@ -4,7 +4,7 @@
 <mapper namespace="com.oyyo.gmall.pms.dao.ProductAttrValueDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.oyyo.gmall.pms.entity.ProductAttrValue" id="productAttrValueMap">
+    <resultMap type="com.oyyo.gmall.pms.entity.ProductAttrValueEntity" id="productAttrValueMap">
         <result property="id" column="id"/>
         <result property="spuId" column="spu_id"/>
         <result property="attrId" column="attr_id"/>

@@ -1,15 +1,17 @@
 package com.oyyo.gmall.pms.dao;
 
-import com.oyyo.gmall.pms.entity.SpuInfo;
+import com.oyyo.gmall.pms.entity.SpuInfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * spu信息
+ * 
  * @author oy
- * @since  2020-04-21 16:16:47
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:37
  */
 @Mapper
-public interface SpuInfoDao extends BaseMapper<SpuInfo> {
+public interface SpuInfoDao extends BaseMapper<SpuInfoEntity> {
 	
 }

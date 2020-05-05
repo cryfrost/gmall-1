@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.SkuImages;
-import com.oyyo.gmall.pms.service.SkuImagesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.SkuImagesEntity;
+import com.oyyo.gmall.pms.service.SkuImagesService;
+
+
+
 
 /**
  * sku图片
+ *
  * @author oy
- * @since  2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Api(tags = "sku图片 管理")
 @RestController
@@ -44,8 +52,8 @@ public class SkuImagesController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('pms:skuimages:info')")
-    public Resp<SkuImages> info(@PathVariable("id") Long id){
-		SkuImages skuImages = skuImagesService.getById(id);
+    public Resp<SkuImagesEntity> info(@PathVariable("id") Long id){
+		SkuImagesEntity skuImages = skuImagesService.getById(id);
 
         return Resp.ok(skuImages);
     }
@@ -56,7 +64,7 @@ public class SkuImagesController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:skuimages:save')")
-    public Resp<Object> save(@RequestBody SkuImages skuImages){
+    public Resp<Object> save(@RequestBody SkuImagesEntity skuImages){
 		skuImagesService.save(skuImages);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class SkuImagesController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:skuimages:update')")
-    public Resp<Object> update(@RequestBody SkuImages skuImages){
+    public Resp<Object> update(@RequestBody SkuImagesEntity skuImages){
 		skuImagesService.updateById(skuImages);
 
         return Resp.ok(null);

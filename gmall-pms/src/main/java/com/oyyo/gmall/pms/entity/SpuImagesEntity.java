@@ -10,13 +10,15 @@ import lombok.Data;
 
 /**
  * spu图片
+ * 
  * @author oy
- * @since 2020-04-21 16:16:47
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @ApiModel
 @Data
 @TableName("pms_spu_images")
-public class SpuImages implements Serializable {
+public class SpuImagesEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

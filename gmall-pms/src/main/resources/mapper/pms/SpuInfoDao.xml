@@ -4,7 +4,7 @@
 <mapper namespace="com.oyyo.gmall.pms.dao.SpuInfoDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.oyyo.gmall.pms.entity.SpuInfo" id="spuInfoMap">
+    <resultMap type="com.oyyo.gmall.pms.entity.SpuInfoEntity" id="spuInfoMap">
         <result property="id" column="id"/>
         <result property="spuName" column="spu_name"/>
         <result property="spuDescription" column="spu_description"/>
@@ -12,7 +12,7 @@
         <result property="brandId" column="brand_id"/>
         <result property="publishStatus" column="publish_status"/>
         <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
+        <result property="uodateTime" column="uodate_time"/>
     </resultMap>
 
 

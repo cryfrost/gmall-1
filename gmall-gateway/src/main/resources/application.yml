@@ -34,8 +34,4 @@ spring:
   application:
     name: gmall-gateway
 
-# 允许跨域的域名
-origin:
-  rui:  http://localhost:1000
-
 

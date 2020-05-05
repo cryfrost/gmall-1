@@ -7,18 +7,19 @@ import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.Query;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.gmall.pms.dao.AttrAttrgroupRelationDao;
-import com.oyyo.gmall.pms.entity.AttrAttrgroupRelation;
+import com.oyyo.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.oyyo.gmall.pms.service.AttrAttrgroupRelationService;
 import org.springframework.stereotype.Service;
 
+
 @Service("attrAttrgroupRelationService")
-public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupRelationDao, AttrAttrgroupRelation> implements AttrAttrgroupRelationService {
+public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupRelationDao, AttrAttrgroupRelationEntity> implements AttrAttrgroupRelationService {
 
     @Override
     public PageVo queryPage(QueryCondition params) {
-        IPage<AttrAttrgroupRelation> page = this.page(
-                new Query<AttrAttrgroupRelation>().getPage(params),
-                new QueryWrapper<>()
+        IPage<AttrAttrgroupRelationEntity> page = this.page(
+                new Query<AttrAttrgroupRelationEntity>().getPage(params),
+                new QueryWrapper<AttrAttrgroupRelationEntity>()
         );
 
         return new PageVo(page);

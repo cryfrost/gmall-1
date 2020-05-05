@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.ProductAttrValue;
-import com.oyyo.gmall.pms.service.ProductAttrValueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.ProductAttrValueEntity;
+import com.oyyo.gmall.pms.service.ProductAttrValueService;
+
+
+
 
 /**
  * spu属性值
+ *
  * @author oy
- * @since  2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Api(tags = "spu属性值 管理")
 @RestController
@@ -44,8 +52,8 @@ public class ProductAttrValueController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('pms:productattrvalue:info')")
-    public Resp<ProductAttrValue> info(@PathVariable("id") Long id){
-		ProductAttrValue productAttrValue = productAttrValueService.getById(id);
+    public Resp<ProductAttrValueEntity> info(@PathVariable("id") Long id){
+		ProductAttrValueEntity productAttrValue = productAttrValueService.getById(id);
 
         return Resp.ok(productAttrValue);
     }
@@ -56,7 +64,7 @@ public class ProductAttrValueController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:productattrvalue:save')")
-    public Resp<Object> save(@RequestBody ProductAttrValue productAttrValue){
+    public Resp<Object> save(@RequestBody ProductAttrValueEntity productAttrValue){
 		productAttrValueService.save(productAttrValue);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class ProductAttrValueController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:productattrvalue:update')")
-    public Resp<Object> update(@RequestBody ProductAttrValue productAttrValue){
+    public Resp<Object> update(@RequestBody ProductAttrValueEntity productAttrValue){
 		productAttrValueService.updateById(productAttrValue);
 
         return Resp.ok(null);

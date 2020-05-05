@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.SpuInfoDesc;
-import com.oyyo.gmall.pms.service.SpuInfoDescService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.SpuInfoDescEntity;
+import com.oyyo.gmall.pms.service.SpuInfoDescService;
+
+
+
 
 /**
  * spu信息介绍
+ *
  * @author oy
- * @since  2020-04-21 16:16:46
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:37
  */
 @Api(tags = "spu信息介绍 管理")
 @RestController
@@ -44,8 +52,8 @@ public class SpuInfoDescController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{spuId}")
     @PreAuthorize("hasAuthority('pms:spuinfodesc:info')")
-    public Resp<SpuInfoDesc> info(@PathVariable("spuId") Long spuId){
-		SpuInfoDesc spuInfoDesc = spuInfoDescService.getById(spuId);
+    public Resp<SpuInfoDescEntity> info(@PathVariable("spuId") Long spuId){
+		SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(spuId);
 
         return Resp.ok(spuInfoDesc);
     }
@@ -56,7 +64,7 @@ public class SpuInfoDescController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:spuinfodesc:save')")
-    public Resp<Object> save(@RequestBody SpuInfoDesc spuInfoDesc){
+    public Resp<Object> save(@RequestBody SpuInfoDescEntity spuInfoDesc){
 		spuInfoDescService.save(spuInfoDesc);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class SpuInfoDescController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:spuinfodesc:update')")
-    public Resp<Object> update(@RequestBody SpuInfoDesc spuInfoDesc){
+    public Resp<Object> update(@RequestBody SpuInfoDescEntity spuInfoDesc){
 		spuInfoDescService.updateById(spuInfoDesc);
 
         return Resp.ok(null);

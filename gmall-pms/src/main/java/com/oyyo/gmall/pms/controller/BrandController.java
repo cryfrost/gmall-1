@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.Brand;
-import com.oyyo.gmall.pms.service.BrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.BrandEntity;
+import com.oyyo.gmall.pms.service.BrandService;
+
+
+
 
 /**
  * 品牌
+ *
  * @author oy
- * @since  2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @Api(tags = "品牌 管理")
 @RestController
@@ -44,8 +52,8 @@ public class BrandController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{brandId}")
     @PreAuthorize("hasAuthority('pms:brand:info')")
-    public Resp<Brand> info(@PathVariable("brandId") Long brandId){
-		Brand brand = brandService.getById(brandId);
+    public Resp<BrandEntity> info(@PathVariable("brandId") Long brandId){
+		BrandEntity brand = brandService.getById(brandId);
 
         return Resp.ok(brand);
     }
@@ -56,7 +64,7 @@ public class BrandController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:brand:save')")
-    public Resp<Object> save(@RequestBody Brand brand){
+    public Resp<Object> save(@RequestBody BrandEntity brand){
 		brandService.save(brand);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class BrandController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public Resp<Object> update(@RequestBody Brand brand){
+    public Resp<Object> update(@RequestBody BrandEntity brand){
 		brandService.updateById(brand);
 
         return Resp.ok(null);

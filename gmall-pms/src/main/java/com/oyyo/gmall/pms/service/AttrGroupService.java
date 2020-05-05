@@ -1,17 +1,19 @@
 package com.oyyo.gmall.pms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.oyyo.gmall.pms.entity.AttrGroupEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
-import com.oyyo.gmall.pms.entity.AttrGroup;
+
 
 /**
  * 属性分组
  *
  * @author oy
- * @since  2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:39
  */
-public interface AttrGroupService extends IService<AttrGroup> {
+public interface AttrGroupService extends IService<AttrGroupEntity> {
 
     PageVo queryPage(QueryCondition params);
 }

@@ -10,13 +10,15 @@ import lombok.Data;
 
 /**
  * spu信息
+ * 
  * @author oy
- * @since 2020-04-21 16:16:47
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:37
  */
 @ApiModel
 @Data
 @TableName("pms_spu_info")
-public class SpuInfo implements Serializable {
+public class SpuInfoEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -58,7 +60,7 @@ public class SpuInfo implements Serializable {
 	/**
 	 * 
 	 */
-	@ApiModelProperty(name = "updateTime",value = "")
-	private Date updateTime;
+	@ApiModelProperty(name = "uodateTime",value = "")
+	private Date uodateTime;
 
 }

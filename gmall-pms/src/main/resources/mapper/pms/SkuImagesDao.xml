@@ -4,7 +4,7 @@
 <mapper namespace="com.oyyo.gmall.pms.dao.SkuImagesDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.oyyo.gmall.pms.entity.SkuImages" id="skuImagesMap">
+    <resultMap type="com.oyyo.gmall.pms.entity.SkuImagesEntity" id="skuImagesMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
         <result property="imgUrl" column="img_url"/>

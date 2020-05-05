@@ -1,22 +1,30 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.util.Arrays;
+import java.util.Map;
+
+
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
-import com.oyyo.gmall.pms.entity.Category;
-import com.oyyo.gmall.pms.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import com.oyyo.gmall.pms.entity.CategoryEntity;
+import com.oyyo.gmall.pms.service.CategoryService;
+
+
+
 
 /**
  * 商品三级分类
+ *
  * @author oy
- * @since  2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:37
  */
 @Api(tags = "商品三级分类 管理")
 @RestController
@@ -44,8 +52,8 @@ public class CategoryController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{catId}")
     @PreAuthorize("hasAuthority('pms:category:info')")
-    public Resp<Category> info(@PathVariable("catId") Long catId){
-		Category category = categoryService.getById(catId);
+    public Resp<CategoryEntity> info(@PathVariable("catId") Long catId){
+		CategoryEntity category = categoryService.getById(catId);
 
         return Resp.ok(category);
     }
@@ -56,7 +64,7 @@ public class CategoryController {
     @ApiOperation("保存")
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('pms:category:save')")
-    public Resp<Object> save(@RequestBody Category category){
+    public Resp<Object> save(@RequestBody CategoryEntity category){
 		categoryService.save(category);
 
         return Resp.ok(null);
@@ -68,7 +76,7 @@ public class CategoryController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:category:update')")
-    public Resp<Object> update(@RequestBody Category category){
+    public Resp<Object> update(@RequestBody CategoryEntity category){
 		categoryService.updateById(category);
 
         return Resp.ok(null);

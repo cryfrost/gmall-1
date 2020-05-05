@@ -10,13 +10,15 @@ import lombok.Data;
 
 /**
  * 商品评价回复关系
+ * 
  * @author oy
- * @since 2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @ApiModel
 @Data
 @TableName("pms_comment_replay")
-public class CommentReplay implements Serializable {
+public class CommentReplayEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -10,13 +10,15 @@ import lombok.Data;
 
 /**
  * 品牌
+ * 
  * @author oy
- * @since 2020-04-21 16:16:49
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @ApiModel
 @Data
 @TableName("pms_brand")
-public class Brand implements Serializable {
+public class BrandEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

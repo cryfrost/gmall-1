@@ -4,7 +4,7 @@
 <mapper namespace="com.oyyo.gmall.pms.dao.SpuInfoDescDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.oyyo.gmall.pms.entity.SpuInfoDesc" id="spuInfoDescMap">
+    <resultMap type="com.oyyo.gmall.pms.entity.SpuInfoDescEntity" id="spuInfoDescMap">
         <result property="spuId" column="spu_id"/>
         <result property="decript" column="decript"/>
     </resultMap>

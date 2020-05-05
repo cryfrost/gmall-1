@@ -10,13 +10,15 @@ import lombok.Data;
 
 /**
  * sku销售属性&值
+ * 
  * @author oy
- * @since 2020-04-21 16:16:48
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:38
  */
 @ApiModel
 @Data
 @TableName("pms_sku_sale_attr_value")
-public class SkuSaleAttrValue implements Serializable {
+public class SkuSaleAttrValueEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**

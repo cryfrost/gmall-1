@@ -10,13 +10,15 @@ import lombok.Data;
 
 /**
  * spu信息介绍
+ * 
  * @author oy
- * @since 2020-04-21 16:16:46
+ * @email oy@lcd.com
+ * @date 2020-05-05 22:41:37
  */
 @ApiModel
 @Data
 @TableName("pms_spu_info_desc")
-public class SpuInfoDesc implements Serializable {
+public class SpuInfoDescEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
