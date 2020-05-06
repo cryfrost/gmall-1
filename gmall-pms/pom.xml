@@ -20,14 +20,6 @@
     </properties>
 
     <dependencies>
-        <!--引入阿里云 oss sdk-->
-        <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
-        <dependency>
-            <groupId>com.aliyun.oss</groupId>
-            <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.9.1</version>
-        </dependency>
-
         <dependency>
             <groupId>com.oyyo</groupId>
             <artifactId>gmall-core</artifactId>

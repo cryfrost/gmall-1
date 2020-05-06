@@ -1,5 +1,6 @@
 package com.oyyo.gmall.pms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
@@ -29,13 +30,28 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * 分类查询
+     * @param level
+     * @param pid
+     * @return
+     */
     @GetMapping
     public Resp<List<CategoryEntity>> queryCategoriesByPidOrLevel(
             @RequestParam(value = "level",defaultValue = "0")Integer level,
             @RequestParam(value = "parentCid",required = false)Long pid){
-//        categoryService.
+        QueryWrapper<CategoryEntity> queryWrapper = new QueryWrapper<>();
+        //判断分类的级别
+        if (level != 0) {
+            queryWrapper.eq("cat_level",level);
+        }
+        //判断父节点的id是否为空
+        if (pid != null) {
+            queryWrapper.eq("parent_cid",pid);
+        }
 
-        return Resp.ok(null);
+        List<CategoryEntity> categoryEntityList = categoryService.list(queryWrapper);
+        return Resp.ok(categoryEntityList);
     }
 
     /**

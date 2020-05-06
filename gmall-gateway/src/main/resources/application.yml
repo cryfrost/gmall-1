@@ -30,8 +30,12 @@ spring:
     # nacos配置
     nacos:
       discovery:
+<<<<<<< HEAD
         server-addr: 122.51.113.141:8848
   application:
     name: gmall-gateway
 
 
+=======
+        server-addr: 122.51.113.141:8848
+>>>>>>> parent of f0485cd... add aliyun oss & add staticConfig proreties
