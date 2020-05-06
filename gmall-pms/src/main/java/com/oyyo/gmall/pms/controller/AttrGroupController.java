@@ -5,6 +5,7 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.pms.entity.AttrGroupEntity;
 import com.oyyo.gmall.pms.service.AttrGroupService;
+import com.oyyo.gmall.pms.vo.GroupVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-
-
 
 
 /**
@@ -29,6 +28,15 @@ import java.util.Arrays;
 public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
+
+    /**
+     * 属性关联组查询
+     */
+    @GetMapping("withattr/{gid}")
+    public Resp<GroupVO> queryGroupWithAttrByGid(@PathVariable("gid")Long gid){
+        GroupVO groupVO = attrGroupService.queryGroupWithAttrByGid(gid);
+        return Resp.ok(groupVO);
+    }
 
     /**
      * 查询三级分类的分组

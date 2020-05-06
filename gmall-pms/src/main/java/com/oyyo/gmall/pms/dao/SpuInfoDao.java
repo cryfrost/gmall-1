@@ -1,7 +1,7 @@
 package com.oyyo.gmall.pms.dao;
 
-import com.oyyo.gmall.pms.entity.SpuInfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.oyyo.gmall.pms.entity.SpuInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SpuInfoDao extends BaseMapper<SpuInfoEntity> {
-	
+
 }

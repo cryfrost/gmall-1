@@ -6,14 +6,21 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.Query;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.pms.dao.AttrAttrgroupRelationDao;
 import com.oyyo.gmall.pms.dao.AttrDao;
+import com.oyyo.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.oyyo.gmall.pms.entity.AttrEntity;
 import com.oyyo.gmall.pms.service.AttrService;
+import com.oyyo.gmall.pms.vo.AttrVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service("attrService")
 public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements AttrService {
+
+    @Autowired
+    private AttrAttrgroupRelationDao relationDao;
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -38,6 +45,18 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 wrapper
         );
         return new PageVo(page);
+    }
+
+    @Override
+    public void saveAttr(AttrVO attrVO) {
+        //新增 attr
+        save(attrVO);
+        Long attrId = attrVO.getAttrId();
+        //新增中间表 attrattrgrouprelationdao
+        AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+        relationEntity.setAttrId(attrId);
+        relationEntity.setAttrGroupId(attrVO.getAttrGroupId());
+        relationDao.insert(relationEntity);
     }
 
 }

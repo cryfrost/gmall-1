@@ -1,9 +1,10 @@
 package com.oyyo.gmall.pms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.oyyo.gmall.pms.entity.AttrGroupEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.pms.entity.AttrGroupEntity;
+import com.oyyo.gmall.pms.vo.GroupVO;
 
 
 /**
@@ -18,5 +19,7 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     PageVo queryPage(QueryCondition params);
 
     PageVo queryGroupByPage(QueryCondition queryCondition, Long catId);
+
+    GroupVO queryGroupWithAttrByGid(Long gid);
 }
 

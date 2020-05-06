@@ -11,6 +11,8 @@ import com.oyyo.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.oyyo.gmall.pms.service.AttrAttrgroupRelationService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service("attrAttrgroupRelationService")
 public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupRelationDao, AttrAttrgroupRelationEntity> implements AttrAttrgroupRelationService {
@@ -23,6 +25,16 @@ public class AttrAttrgroupRelationServiceImpl extends ServiceImpl<AttrAttrgroupR
         );
 
         return new PageVo(page);
+    }
+
+    @Override
+    public void deleteRelations(List<AttrAttrgroupRelationEntity> relationEntityList) {
+
+        relationEntityList.forEach(relationEntity -> {
+        remove(new QueryWrapper<AttrAttrgroupRelationEntity>()
+                .eq("attr_id",relationEntity.getAttrId())
+                .eq("attr_group_id",relationEntity.getAttrGroupId()));
+        });
     }
 
 }

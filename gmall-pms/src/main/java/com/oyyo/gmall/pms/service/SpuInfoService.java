@@ -16,5 +16,7 @@ import com.oyyo.core.bean.QueryCondition;
 public interface SpuInfoService extends IService<SpuInfoEntity> {
 
     PageVo queryPage(QueryCondition params);
+
+    PageVo querySpuByPage(QueryCondition queryCondition, Long catId);
 }
 

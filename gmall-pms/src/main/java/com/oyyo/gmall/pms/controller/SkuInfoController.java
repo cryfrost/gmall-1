@@ -1,22 +1,19 @@
 package com.oyyo.gmall.pms.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.entity.SkuInfoEntity;
+import com.oyyo.gmall.pms.service.SkuInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.pms.entity.SkuInfoEntity;
-import com.oyyo.gmall.pms.service.SkuInfoService;
-
-
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -32,6 +29,12 @@ import com.oyyo.gmall.pms.service.SkuInfoService;
 public class SkuInfoController {
     @Autowired
     private SkuInfoService skuInfoService;
+
+    @GetMapping("{spuId}")
+    public Resp<List<SkuInfoEntity>> querySkusBySpuId(@PathVariable("spuId")Long spuId){
+        List<SkuInfoEntity> skuInfoEntities = skuInfoService.list(new QueryWrapper<SkuInfoEntity>().eq("spu_id", spuId));
+        return Resp.ok(skuInfoEntities);
+    }
 
     /**
      * 列表

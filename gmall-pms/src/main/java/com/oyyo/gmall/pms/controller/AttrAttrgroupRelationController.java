@@ -12,8 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-
-
+import java.util.List;
 
 
 /**
@@ -29,6 +28,16 @@ import java.util.Arrays;
 public class AttrAttrgroupRelationController {
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
+
+    /**
+     * 删除关联关系
+     */
+    @PostMapping("delete/attr")
+    public Resp<Object> deleteRelations(@RequestBody List<AttrAttrgroupRelationEntity> relationEntityList){
+        attrAttrgroupRelationService.deleteRelations(relationEntityList);
+
+        return Resp.ok(null);
+    }
 
     /**
      * 列表
