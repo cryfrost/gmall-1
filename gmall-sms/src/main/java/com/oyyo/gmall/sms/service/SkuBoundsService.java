@@ -1,9 +1,10 @@
 package com.oyyo.gmall.sms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.oyyo.gmall.sms.entity.SkuBoundsEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.sms.entity.SkuBoundsEntity;
+import com.oyyo.gmall.sms.vo.SkuSaleVO;
 
 
 /**
@@ -16,5 +17,6 @@ import com.oyyo.core.bean.QueryCondition;
 public interface SkuBoundsService extends IService<SkuBoundsEntity> {
 
     PageVo queryPage(QueryCondition params);
+    void saveSaleInfo(SkuSaleVO skuSaleVO);
 }
 

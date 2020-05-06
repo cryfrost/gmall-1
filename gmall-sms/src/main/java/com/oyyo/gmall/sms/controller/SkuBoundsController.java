@@ -1,20 +1,18 @@
 package com.oyyo.gmall.sms.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.sms.entity.SkuBoundsEntity;
+import com.oyyo.gmall.sms.service.SkuBoundsService;
+import com.oyyo.gmall.sms.vo.SkuSaleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.sms.entity.SkuBoundsEntity;
-import com.oyyo.gmall.sms.service.SkuBoundsService;
+import java.util.Arrays;
 
 
 
@@ -33,6 +31,11 @@ public class SkuBoundsController {
     @Autowired
     private SkuBoundsService skuBoundsService;
 
+    @PostMapping("sku/sale/save")
+    public Resp<Object> saveSaleInfo(@RequestBody SkuSaleVO skuSaleVO){
+        skuBoundsService.saveSaleInfo(skuSaleVO);
+        return Resp.ok(null);
+    }
     /**
      * 列表
      */

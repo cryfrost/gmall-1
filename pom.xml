@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.atguigu</groupId>
+    <groupId>com.oyyo</groupId>
     <artifactId>gmall</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <description>谷粒商城</description>
@@ -17,6 +17,7 @@
         <module>gmall-sms</module>
         <module>gmall-ums</module>
         <module>gmall-wms</module>
+        <module>gmall-sms-interface</module>
 
     </modules>
 

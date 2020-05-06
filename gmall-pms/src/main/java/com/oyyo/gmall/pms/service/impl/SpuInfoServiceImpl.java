@@ -10,6 +10,7 @@ import com.oyyo.gmall.pms.dao.SkuInfoDao;
 import com.oyyo.gmall.pms.dao.SpuInfoDao;
 import com.oyyo.gmall.pms.dao.SpuInfoDescDao;
 import com.oyyo.gmall.pms.entity.*;
+import com.oyyo.gmall.pms.feign.GmallSmsClient;
 import com.oyyo.gmall.pms.service.ProductAttrValueService;
 import com.oyyo.gmall.pms.service.SkuImagesService;
 import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
@@ -17,7 +18,9 @@ import com.oyyo.gmall.pms.service.SpuInfoService;
 import com.oyyo.gmall.pms.vo.BaseAttrVO;
 import com.oyyo.gmall.pms.vo.SkuInfoVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
+import com.oyyo.gmall.sms.vo.SkuSaleVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -43,6 +46,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SkuImagesService skuImagesService;
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
+    @Autowired
+    private GmallSmsClient gmallSmsClient;
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -139,12 +144,17 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 skuImagesService.saveBatch(skuImagesEntities);
             }
 
-            // 3 保存商品相关营销信息 3张表
             List<SkuSaleAttrValueEntity> saleAttrs = skuInfoVO.getSaleAttrs();
             if (!CollectionUtils.isEmpty(saleAttrs)) {
                 saleAttrs.forEach(skuSaleAttrValueEntity -> skuSaleAttrValueEntity.setSkuId(skuId));
                 skuSaleAttrValueService.saveBatch(saleAttrs);
             }
+            //远程调用 feign 保存商品相关营销信息 3张表
+            SkuSaleVO skuSaleVO = new SkuSaleVO();
+            BeanUtils.copyProperties(skuInfoVO,skuSaleVO);
+            skuSaleVO.setSkuId(skuId);
+            gmallSmsClient.saveSaleInfo(skuSaleVO);
+
         });
 
     }
