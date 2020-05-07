@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -87,36 +88,20 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * @param spuInfoVo
      */
     @Override
+    @Transactional
     public void saveGoodsInfo(SpuInfoVo spuInfoVo) {
 
         //1 保存spu相关信息
-        //|_ 保存spuInfo
-        spuInfoVo.setCreateTime(new Date());
-        spuInfoVo.setUodateTime(spuInfoVo.getCreateTime());
-        save(spuInfoVo);
-        Long spuId = spuInfoVo.getId();
-        //|_ 保存spuInfo_desc
-        List<String> spuImages = spuInfoVo.getSpuImages();
-        if (!CollectionUtils.isEmpty(spuImages)) {
-            SpuInfoDescEntity spuInfoDescEntity = new SpuInfoDescEntity();
-            spuInfoDescEntity.setSpuId(spuId);
-            spuInfoDescEntity.setDecript(StringUtils.join(spuImages,","));
-            spuInfoDescDao.insert(spuInfoDescEntity);
-        }
+        Long spuId = saveSpuInfo(spuInfoVo);
+        saveSpuInfoDesc(spuInfoVo, spuId);
+        saveBaseAttr(spuInfoVo, spuId);
 
-        //|_ 保存product_attr_value
-        List<BaseAttrVO> baseAttrs = spuInfoVo.getBaseAttrs();
-        if (!CollectionUtils.isEmpty(baseAttrs)) {
-            //强转
-            List<ProductAttrValueEntity> attrValueEntities = baseAttrs.stream().map(
-                    baseAttrVO -> {
-                        ProductAttrValueEntity attrValueEntity = baseAttrVO;
-                        attrValueEntity.setSpuId(spuId);
-                        return attrValueEntity;
-                    }).collect(Collectors.toList());
-            productAttrValueService.saveBatch(attrValueEntities);
-        }
         // 2 保存相关 sku 相关信息
+        saveSkuAndSale(spuInfoVo, spuId);
+
+    }
+
+    private void saveSkuAndSale(SpuInfoVo spuInfoVo, Long spuId) {
         List<SkuInfoVO> skus = spuInfoVo.getSkus();
         if (CollectionUtils.isEmpty(skus)) {
             return;
@@ -156,7 +141,40 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             gmallSmsClient.saveSaleInfo(skuSaleVO);
 
         });
+    }
 
+    private void saveBaseAttr(SpuInfoVo spuInfoVo, Long spuId) {
+        //|_ 保存product_attr_value
+        List<BaseAttrVO> baseAttrs = spuInfoVo.getBaseAttrs();
+        if (!CollectionUtils.isEmpty(baseAttrs)) {
+            //强转
+            List<ProductAttrValueEntity> attrValueEntities = baseAttrs.stream().map(
+                    baseAttrVO -> {
+                        ProductAttrValueEntity attrValueEntity = baseAttrVO;
+                        attrValueEntity.setSpuId(spuId);
+                        return attrValueEntity;
+                    }).collect(Collectors.toList());
+            productAttrValueService.saveBatch(attrValueEntities);
+        }
+    }
+
+    private void saveSpuInfoDesc(SpuInfoVo spuInfoVo, Long spuId) {
+        //|_ 保存spuInfo_desc
+        List<String> spuImages = spuInfoVo.getSpuImages();
+        if (!CollectionUtils.isEmpty(spuImages)) {
+            SpuInfoDescEntity spuInfoDescEntity = new SpuInfoDescEntity();
+            spuInfoDescEntity.setSpuId(spuId);
+            spuInfoDescEntity.setDecript(StringUtils.join(spuImages,","));
+            spuInfoDescDao.insert(spuInfoDescEntity);
+        }
+    }
+
+    private Long saveSpuInfo(SpuInfoVo spuInfoVo) {
+        //|_ 保存spuInfo
+        spuInfoVo.setCreateTime(new Date());
+        spuInfoVo.setUodateTime(spuInfoVo.getCreateTime());
+        save(spuInfoVo);
+        return spuInfoVo.getId();
     }
 
 }
