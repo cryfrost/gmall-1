@@ -19,11 +19,11 @@ import com.oyyo.gmall.pms.vo.BaseAttrVO;
 import com.oyyo.gmall.pms.vo.SkuInfoVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
 import com.oyyo.gmall.sms.vo.SkuSaleVO;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -87,8 +87,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * 保存 商品信息
      * @param spuInfoVo
      */
+    @GlobalTransactional
     @Override
-    @Transactional
     public void saveGoodsInfo(SpuInfoVo spuInfoVo) {
 
         //1 保存spu相关信息

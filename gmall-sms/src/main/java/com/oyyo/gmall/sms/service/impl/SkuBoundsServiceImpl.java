@@ -16,6 +16,7 @@ import com.oyyo.gmall.sms.service.SkuBoundsService;
 import com.oyyo.gmall.sms.vo.SkuSaleVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsDao, SkuBoundsEnt
 
         return new PageVo(page);
     }
+    @Transactional
     @Override
     public void saveSaleInfo(SkuSaleVO skuSaleVO) {
         //保存营销数据

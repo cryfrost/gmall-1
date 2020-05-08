@@ -29,14 +29,45 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # seata config
 seata:
-  application-id: ${spring.application.name} # Seata 应用名称，默认使用 ${spring.application.name}
-  tx-service-group: default # Seata 事务组, 高版本没找到相关配置, 是否可配置未知 选用默认default
-  # 服务配置项
+  tx-service-group: gmall-pms-seata
+  client:
+    support:
+      spring:
+        datasource-autoproxy: true
+    rm:
+      lock:
+        lock-retry-times: 60
+  config:
+    type: nacos
+    nacos:
+      server-addr: 122.51.113.141:8848
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 122.51.113.141:8848
   service:
-    # 虚拟组和分组的映射 1.0.0以上好像将vgroup-mapping 改为 vgroupMapping, 此处是否影响未测试
-    vgroupMapping:
-      # 此处Key对应 tx-service-group 的 Value, 此处 value 默认 default
-      default: default
-    # 分组和 Seata 服务的映射 默认端口8091
-    grouplist:
-      default: 121.36.130.137:8091
+    grouplist: 121.36.130.137:8091
+feign:
+  hystrix:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 10000 # 连接超时
+        readTimeout: 600000 # 响应超时
+### Ribbon 配置
+ribbon:
+  # 连接超时
+  ConnectTimeout: 2000
+  # 响应超时
+  ReadTimeout: 5000
+#配置熔断的时间监听
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 10000
+          enabled: false
