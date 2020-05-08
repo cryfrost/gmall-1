@@ -26,3 +26,20 @@ mybatis-plus:
   mapper-locations: classpath:mapper/sms/**/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# seata config
+seata:
+  tx-service-group: gmall-sms-seata
+  client:
+    support:
+      spring:
+        datasource-autoproxy: true
+  config:
+    type: nacos
+    nacos:
+      server-addr: 122.51.113.141:8848
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 122.51.113.141:8848
+  service:
+    grouplist: 121.36.130.137:8091

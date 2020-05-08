@@ -7,7 +7,8 @@ spring:
         server-addr: 122.51.113.141:8848
     alibaba:
       seata:
-        tx-service-group: vgroupMapping.gmall-pms-seata
+        tx-service-group: gmall-pms-seata
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://122.51.113.141:3306/guli_pms
@@ -26,3 +27,16 @@ mybatis-plus:
   mapper-locations: classpath:mapper/pms/**/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# seata config
+seata:
+  application-id: ${spring.application.name} # Seata 应用名称，默认使用 ${spring.application.name}
+  tx-service-group: default # Seata 事务组, 高版本没找到相关配置, 是否可配置未知 选用默认default
+  # 服务配置项
+  service:
+    # 虚拟组和分组的映射 1.0.0以上好像将vgroup-mapping 改为 vgroupMapping, 此处是否影响未测试
+    vgroupMapping:
+      # 此处Key对应 tx-service-group 的 Value, 此处 value 默认 default
+      default: default
+    # 分组和 Seata 服务的映射 默认端口8091
+    grouplist:
+      default: 121.36.130.137:8091
