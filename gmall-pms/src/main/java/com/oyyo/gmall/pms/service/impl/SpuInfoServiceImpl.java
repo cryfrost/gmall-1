@@ -19,11 +19,11 @@ import com.oyyo.gmall.pms.vo.BaseAttrVO;
 import com.oyyo.gmall.pms.vo.SkuInfoVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
 import com.oyyo.gmall.sms.vo.SkuSaleVO;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -88,7 +88,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * @param spuInfoVo
      */
     @Override
-    @Transactional
+    @GlobalTransactional
     public void saveGoodsInfo(SpuInfoVo spuInfoVo) {
 
         //1 保存spu相关信息
@@ -109,6 +109,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         skus.forEach(skuInfoVO -> {
             skuInfoVO.setSpuId(spuId);
             skuInfoVO.setSkuCode(UUID.randomUUID().toString());
+            skuInfoVO.setCatalogId(spuInfoVo.getCatalogId());
             skuInfoVO.setBrandId(spuInfoVo.getBrandId());
             List<String> skuInfoVOImages = skuInfoVO.getImages();
             //设置默认图片
