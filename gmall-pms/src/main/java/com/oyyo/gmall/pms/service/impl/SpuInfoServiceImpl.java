@@ -87,8 +87,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * 保存 商品信息
      * @param spuInfoVo
      */
-    @Override
     @GlobalTransactional
+    @Override
     public void saveGoodsInfo(SpuInfoVo spuInfoVo) {
 
         //1 保存spu相关信息
