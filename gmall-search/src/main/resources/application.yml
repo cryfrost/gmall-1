@@ -1,0 +1,26 @@
+server:
+  port: 8086
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 122.51.113.141:8848
+  elasticsearch:
+    rest:
+      uris: http://121.36.130.137:9200
+      connection-timeout: 10000
+
+#hystrix的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+#ribbon的超时时间
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000

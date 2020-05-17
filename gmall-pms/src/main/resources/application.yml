@@ -14,7 +14,7 @@ spring:
     url: jdbc:mysql://122.51.113.141:3306/guli_pms
     username: root
     password: root
-# redis
+  # redis
   redis:
     host: 122.51.113.141
     port: 6379

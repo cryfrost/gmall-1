@@ -5,6 +5,8 @@ import com.oyyo.gmall.pms.entity.ProductAttrValueEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 
+import java.util.List;
+
 
 /**
  * spu属性值
@@ -16,5 +18,7 @@ import com.oyyo.core.bean.QueryCondition;
 public interface ProductAttrValueService extends IService<ProductAttrValueEntity> {
 
     PageVo queryPage(QueryCondition params);
+
+    List<ProductAttrValueEntity> querySearchAttrValueBySpuId(Long spuId);
 }
 
