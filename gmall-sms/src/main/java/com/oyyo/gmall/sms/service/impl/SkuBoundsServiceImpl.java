@@ -40,7 +40,6 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsDao, SkuBoundsEnt
     }
     @Transactional
     @Override
-    @Transactional
     public void saveSaleInfo(SkuSaleVO skuSaleVO) {
         //保存营销数据
         SkuBoundsEntity skuBoundsEntity = new SkuBoundsEntity();
