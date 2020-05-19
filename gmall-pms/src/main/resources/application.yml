@@ -11,9 +11,12 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://122.51.113.141:3306/guli_pms
+    url: jdbc:mysql://122.51.113.141:3306/guli_pms?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: root
+    hikari:
+      max-lifetime: 1200000
+      connection-timeout: 60000
   # redis
   redis:
     host: 122.51.113.141
