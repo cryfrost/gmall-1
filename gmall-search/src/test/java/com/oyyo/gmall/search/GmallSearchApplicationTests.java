@@ -9,11 +9,17 @@ import com.oyyo.gmall.search.feign.GmallPmsClient;
 import com.oyyo.gmall.search.feign.GmallWmsClient;
 import com.oyyo.gmall.search.repository.GoodsRepository;
 import com.oyyo.gmall.wms.entity.WareSkuEntity;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -121,6 +127,22 @@ class GmallSearchApplicationTests {
             pageSize = (long)spus.size();
             pageNum++;
         }while (pageSize == 100);
+    }
+
+    @Test
+    void findheight(){
+        NativeSearchQuery query = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.termQuery("title","米"))
+                .withHighlightFields(new HighlightBuilder.Field("title").postTags("<em>")
+                .preTags("</em>")).build();
+//        SearchRequestBuilder searchRequestBuilder = new SearchRequestBuilder("goods");
+        SearchHits<GoodsEntity> search = restTemplate.search(query, GoodsEntity.class);
+        search.getSearchHits().forEach(System.out::println);
+        List<SearchHit<GoodsEntity>> searchHits = search.getSearchHits();
+//        Aggregation title = search.getAggregations().get("title");
+        searchHits.forEach(goodsEntitySearchHit -> {
+            System.out.println(goodsEntitySearchHit.getHighlightField("title"));
+        });
     }
 
 }

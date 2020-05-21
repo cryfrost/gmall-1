@@ -1,5 +1,6 @@
+
 server:
-  port: 8086
+  port: 8061
 spring:
   cloud:
     nacos:
@@ -9,6 +10,8 @@ spring:
     rest:
       uris: http://121.36.130.137:9200
       connection-timeout: 10000
+  devtools:
+    add-properties: false
 
 #hystrix的超时时间
 hystrix:
