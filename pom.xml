@@ -8,7 +8,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <description>谷粒商城</description>
     <packaging>pom</packaging>
-
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
     <modules>
         <module>gmall-core</module>
         <module>gmall-admin</module>
