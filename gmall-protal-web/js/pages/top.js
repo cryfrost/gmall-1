@@ -14,7 +14,7 @@ const lyTop = {
                             <form action='' class='sui-form form-inline'> \
                                 <!--searchAutoComplete--> \
                                 <div class='input-append'> \
-                                    <input type='text' id='autocomplete' v-model='key' \
+                                    <input type='text' id='autocomplete' v-model='keyword' \
                                            class='input-error input-xxlarge'/> \
                                     <button @click='search' class='sui-btn btn-xlarge btn-danger' type='button'>搜索</button> \
                                 </div> \
@@ -73,13 +73,13 @@ const lyTop = {
     name:'ly-top',
     data() {
         return {
-            key: "",
+            keyword: "",
             query: location.search
         }
     },
     methods: {
         search() {
-            window.location = 'search.html?key=' + this.key;
+            window.location = 'search.html?keyword=' + this.keyword;
         },
         getUrlParam: function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -91,7 +91,7 @@ const lyTop = {
         }
     },
     created() {
-        this.key = this.getUrlParam("key");
+        this.keyword = this.getUrlParam("keyword");
     },
     components: {
         shortcut:() => import('./shortcut.js')

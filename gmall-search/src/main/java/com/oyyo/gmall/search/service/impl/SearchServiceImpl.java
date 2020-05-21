@@ -57,7 +57,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponseVO search(SearchParamEntity searchParamEntity) throws IOException {
         if (searchParamEntity == null) {
-            return null;
+            return new SearchResponseVO();
         }
         //构建dsl语句
         SearchRequest searchRequest = buildQueryDSL(searchParamEntity);
@@ -240,6 +240,12 @@ public class SearchServiceImpl implements SearchService {
         //构建分页
         Integer pageNum = searchParamEntity.getPageNum();
         Integer pageSize = searchParamEntity.getPageSize();
+        if (pageNum == null) {
+            pageNum = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
         sourceBuilder.from((pageNum - 1)* pageSize);
         sourceBuilder.size(pageSize);
 
