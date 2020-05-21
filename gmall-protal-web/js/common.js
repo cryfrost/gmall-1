@@ -512,7 +512,7 @@ const stringify = function(object, options) {
     return values.join("&");
 }
 
-axios.defaults.baseURL = "http://api.leyou.com/api";
+axios.defaults.baseURL = "http://127.0.0.1:8086";
 axios.defaults.timeout = 5000;
 axios.defaults.withCredentials = true
 

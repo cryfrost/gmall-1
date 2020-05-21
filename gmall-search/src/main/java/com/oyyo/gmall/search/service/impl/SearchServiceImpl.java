@@ -56,11 +56,14 @@ public class SearchServiceImpl implements SearchService {
      */
     @Override
     public SearchResponseVO search(SearchParamEntity searchParamEntity) throws IOException {
+        if (searchParamEntity == null) {
+            return null;
+        }
         //构建dsl语句
         SearchRequest searchRequest = buildQueryDSL(searchParamEntity);
-        System.out.println(searchRequest.getDescription());
+//        System.out.println(searchRequest.getDescription());
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-        System.out.println(searchResponse);
+//        System.out.println(searchResponse);
 
         SearchResponseVO responseVO = parseSearchResult(searchResponse);
         responseVO.setPageNum(searchParamEntity.getPageNum());
@@ -250,6 +253,7 @@ public class SearchServiceImpl implements SearchService {
                 switch (split[0]){
                     case "1": filed="sale";break;
                     case "2": filed="price";break;
+                    default:break;
                 }
                 sourceBuilder.sort(filed,StringUtils.equals("asc",split[1] )? SortOrder.ASC : SortOrder.DESC);
             }

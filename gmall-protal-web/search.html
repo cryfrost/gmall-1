@@ -342,9 +342,10 @@
         el: "#searchApp",
         data: {
             ly,
-            search: {
-                key: "",
-                page: 1,
+            searchParamEntity: {
+                keyword: "",
+                pageNum: 1,
+                pageSize: 10,
                 filter: {}
             },
             goodsList: [],
@@ -375,14 +376,14 @@
                     if (!oldVal || !oldVal.key) {
                         return;
                     }
-                    window.location = "http://www.leyou.com/search.html?" + ly.stringify(this.search);
+                    window.location = "http://127.0.0.1:8086/search.html?" + ly.stringify(this.search);
                 }
             }
         },
         methods: {
             //异步请求方法
             loadData() {
-                ly.http.post("/search/page", this.search).then(({data}) => {
+                ly.http.get("/search", this.search).then(({data}) => {
                     data.items.forEach(goods => {
                         //转换为json对象数组
                         goods.skus = JSON.parse(goods.skus);
