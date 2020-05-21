@@ -1,6 +1,7 @@
 .idea/
 target/
 myConfigProperties/
+*.iml
 #.gitignore
 # Compiled class file
 *.class
