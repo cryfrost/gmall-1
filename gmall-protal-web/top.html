@@ -15,7 +15,7 @@
                         <form action="" class="sui-form form-inline">
                             <!--searchAutoComplete-->
                             <div class="input-append">
-                                <input type="text" id="autocomplete" type="text" v-model="key"
+                                <input type="text" id="autocomplete" type="text" v-model="keyword"
                                        class="input-error input-xxlarge"/>
                                 <button @click="search" class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
                             </div>
@@ -78,12 +78,12 @@
         var headVm = new Vue({
             el: "#headApp",
             data: {
-                key: "",
-                query: location.search
+                keyword: "",
+                query: location.searchParam
             },
             methods: {
                 search() {
-                    window.location = 'search.html?key=' + this.key;
+                    window.location = 'search.html?keyword=' + this.keyword;
                 },
                 getUrlParam: function (name) {
                     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -95,7 +95,7 @@
                 }
             },
             created() {
-                this.key = this.getUrlParam("key");
+                this.keyword = this.getUrlParam("keyword");
             },
             components: {
                 shortcut

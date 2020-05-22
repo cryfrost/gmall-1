@@ -10,7 +10,7 @@ public class SearchParamEntity {
     String order;//0 综合排序 1 销量 2 价格
     Integer pageNum = 1;//页码
     String[] props;//页面提交的数组
-    Integer pageSize;//每页数量
+    Integer pageSize=10;//每页数量
     Integer priceFrom;//价格区间开始
     Integer priceTo;//价格区间结束
 

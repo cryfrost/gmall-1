@@ -27,6 +27,10 @@ spring:
           uri: lb://ums-service
           predicates:
             - Path=/ums/**
+        - id: search-route
+          uri: lb://search-service
+          predicates:
+            - Path=/search/**
     # nacos配置
     nacos:
       discovery:

@@ -1,9 +1,9 @@
 前端使用 live-server **热部署** 运行
  * 首先安装 live-server
- 
+ ```shell script
+ npm install -g live-server # -g 全局安装 
+```
    
-    
-    npm install -g live-server # -g 全局安装 
     
  * 安装好之后就可以运行
 ```shell script

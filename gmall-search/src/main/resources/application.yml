@@ -9,6 +9,7 @@ spring:
     rest:
       uris: http://121.36.130.137:9200
       connection-timeout: 10000
+      read-timeout: 100
 #hystrix的超时时间
 hystrix:
   command:

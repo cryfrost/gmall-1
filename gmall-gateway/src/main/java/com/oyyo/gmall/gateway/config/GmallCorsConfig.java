@@ -8,6 +8,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 /**
  * @ClassName: GmallCorsConfig
  * @Description:  cors 跨域配置
@@ -23,14 +25,16 @@ public class GmallCorsConfig {
      * 允许跨域的域名
      */
     @Value("${origin.uri}")
-    private String origin ;
+//    private String origin ;
+    private List<String> origin ;
 
     @Bean
     public CorsWebFilter corsWebFilter(){
         //跨域配置对象
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         System.out.println("允许跨域域名：。。。" + origin);
-        corsConfiguration.addAllowedOrigin(origin);
+//        corsConfiguration.addAllowedOrigin(origin);
+        corsConfiguration.setAllowedOrigins(origin);
         //是否允许携带cookie
         corsConfiguration.setAllowCredentials(true);
         //允许所有请求方法
