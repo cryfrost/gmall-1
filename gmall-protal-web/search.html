@@ -760,6 +760,33 @@
     var vm = new Vue({
         el: "#searchApp",
         data: {
+            searchParam:{
+                keyword:""
+            },
+            Resp:{
+                code:"",
+                msg:"",
+                SearchResponseVO: ""
+            }
+        },
+        created(){
+            if (!location.search){
+                return;
+            }
+            //初始化 请求参数  获取请求路径参数 并转化为 json
+            const searchParam = ly.parse(location.search.substring(1));
+            this.searchParam = searchParam;
+
+            this.loadData();
+        },
+        methods: {
+          loadData(){
+              ly.http.post("search/page",this.searchParam).then(
+                  res => {
+                      console.log(res);
+                  }
+              ).catch()
+          }
         },
 
         components:{

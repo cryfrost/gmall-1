@@ -34,10 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,12 +57,26 @@ public class SearchServiceImpl implements SearchService {
             return new SearchResponseVO();
         }
         //构建dsl语句
+       /* Integer pageNum = searchParamEntity.getPageNum();
+        Integer pageSize = searchParamEntity.getPageSize();
+        if (pageNum == null) {
+            pageNum = 1;
+            searchParamEntity.setPageNum(pageNum);
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }*/
+       //替换上面的代码
+        Integer integer = Optional.ofNullable(searchParamEntity.getPageNum()).orElse(1);
+        Integer integer1 = Optional.ofNullable(searchParamEntity.getPageSize()).orElse(10);
+
         SearchRequest searchRequest = buildQueryDSL(searchParamEntity);
 //        System.out.println(searchRequest.getDescription());
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
 //        System.out.println(searchResponse);
 
         SearchResponseVO responseVO = parseSearchResult(searchResponse);
+
         responseVO.setPageNum(searchParamEntity.getPageNum());
         responseVO.setPageSize(searchParamEntity.getPageSize());
 
@@ -240,12 +251,6 @@ public class SearchServiceImpl implements SearchService {
         //构建分页
         Integer pageNum = searchParamEntity.getPageNum();
         Integer pageSize = searchParamEntity.getPageSize();
-        if (pageNum == null) {
-            pageNum = 1;
-        }
-        if (pageSize == null) {
-            pageSize = 10;
-        }
         sourceBuilder.from((pageNum - 1)* pageSize);
         sourceBuilder.size(pageSize);
 
