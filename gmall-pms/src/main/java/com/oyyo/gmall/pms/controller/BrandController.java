@@ -1,20 +1,17 @@
 package com.oyyo.gmall.pms.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.entity.BrandEntity;
+import com.oyyo.gmall.pms.service.BrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.pms.entity.BrandEntity;
-import com.oyyo.gmall.pms.service.BrandService;
+import java.util.Arrays;
 
 
 

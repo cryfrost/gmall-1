@@ -109,6 +109,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         skus.forEach(skuInfoVO -> {
             skuInfoVO.setSpuId(spuId);
             skuInfoVO.setSkuCode(UUID.randomUUID().toString());
+            skuInfoVO.setCatalogId(spuInfoVo.getCatalogId());
             skuInfoVO.setBrandId(spuInfoVo.getBrandId());
             List<String> skuInfoVOImages = skuInfoVO.getImages();
             //设置默认图片

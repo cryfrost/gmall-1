@@ -1,7 +1,7 @@
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://122.51.113.141:3306/guli_admin?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        url: jdbc:mysql://122.51.113.141:3306/guli_admin?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
         driver-class-name: com.mysql.cj.jdbc.Driver
         username: root
         password: root

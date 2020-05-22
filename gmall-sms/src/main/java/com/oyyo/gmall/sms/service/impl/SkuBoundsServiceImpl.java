@@ -47,7 +47,6 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsDao, SkuBoundsEnt
         List<Integer> work = skuSaleVO.getWork();
         skuBoundsEntity.setWork(work.get(3) * 1 + work.get(2) * 2 + work.get(1) * 4 + work.get(0) * 8);
         save(skuBoundsEntity);
-
         //保存打折信息
         SkuLadderEntity skuLadderEntity = new SkuLadderEntity();
         skuLadderEntity.setSkuId(skuSaleVO.getSkuId());

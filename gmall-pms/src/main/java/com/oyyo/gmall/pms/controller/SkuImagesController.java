@@ -1,12 +1,16 @@
 package com.oyyo.gmall.pms.controller;
 
+import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +47,25 @@ public class SkuImagesController {
         PageVo page = skuImagesService.queryPage(queryCondition);
 
         return Resp.ok(page);
+    }
+
+    @ApiOperation("获取imgs")
+    @GetMapping("/getImgs/{skuId}")
+    @PreAuthorize("hasAnyAuthority('pms:shuimages:listImgs')")
+    public Resp<String> getImgs(String skuId, QueryCondition queryCondition) {
+        QueryWrapper<SkuImagesEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("sku_id",skuId);
+        queryWrapper.orderByAsc("default_img");
+        StringBuilder ids = new StringBuilder();
+        List<SkuImagesEntity> list = skuImagesService.list(queryWrapper);
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 0) {
+                ids = new StringBuilder(list.get(i).getImgUrl());
+            } else {
+                ids.append(",").append(list.get(i).getImgUrl());
+            }
+        }
+        return Resp.ok(ids.toString());
     }
 
 
