@@ -12,5 +12,17 @@
         <result property="defaultImg" column="default_img"/>
     </resultMap>
 
+    <select id="querySkuImgsBySkuId" resultType="java.lang.String">
+        select
+            img_url imgUrl
+        from
+            pms_sku_images
+        where
+            sku_id = #{skuId}
+        order by
+            default_img
+        desc
+    </select>
+
 
 </mapper>

@@ -99,9 +99,16 @@ class GmallSearchApplicationTests {
                         }
 
                         goodsEntity.setCreateTime(spuInfoEntity.getCreateTime());
-                        goodsEntity.setPic(skuInfoEntity.getSkuDefaultImg());
+//                        goodsEntity.setPic(skuInfoEntity.getSkuDefaultImg());
+
+                        //查询skuImage 设置查询结果图片
+                        Resp<String> skuImgs = pmsClient.getSkuImgs(skuInfoEntity.getSkuId());
+                        //接口返回  用 ，分隔的字符串  前端需要用，号解析
+                        goodsEntity.setPic(skuImgs.getData());
+//                        skuInfoEntity.geti
+                        //设置价格
                         goodsEntity.setPrice(skuInfoEntity.getPrice().doubleValue());
-                        goodsEntity.setSale(100l);
+                        goodsEntity.setSale(100L);
                         goodsEntity.setSkuId(skuInfoEntity.getSkuId());
                         //查询库存
                         Resp<List<WareSkuEntity>> listResp = wmsClient.queryWareSkuBySkuId(skuInfoEntity.getSkuId());
@@ -113,6 +120,7 @@ class GmallSearchApplicationTests {
                             goodsEntity.setStore(false);
                         }
                         goodsEntity.setTitle(skuInfoEntity.getSkuTitle());
+
 
                         return goodsEntity;
                     }).collect(Collectors.toList());

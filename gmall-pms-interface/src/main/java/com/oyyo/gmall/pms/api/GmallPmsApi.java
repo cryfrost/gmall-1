@@ -16,6 +16,13 @@ public interface GmallPmsApi {
     Resp<List<SpuInfoEntity>> querySpusByPage(@RequestBody QueryCondition queryCondition);
 
     /**
+     * 查询 sku 所有图片
+     * @param skuId
+     * @return
+     */
+    @GetMapping("pms/skuimages/getImgs/{skuId}")
+     Resp<String> querySkuImgsBySkuId(@PathVariable("skuId") String skuId) ;
+    /**
      * 列表
      */
     @GetMapping("pms/spuinfo/list")
