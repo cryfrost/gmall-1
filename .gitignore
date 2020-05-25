@@ -2,6 +2,7 @@
 target/
 myConfigProperties/
 *.iml
+**/*.iml
 #.gitignore
 # Compiled class file
 *.class
