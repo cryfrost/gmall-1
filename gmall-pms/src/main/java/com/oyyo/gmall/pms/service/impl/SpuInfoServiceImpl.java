@@ -20,8 +20,10 @@ import com.oyyo.gmall.pms.vo.SkuInfoVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
 import com.oyyo.gmall.sms.vo.SkuSaleVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -49,7 +51,15 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SkuSaleAttrValueService skuSaleAttrValueService;
     @Autowired
     private GmallSmsClient gmallSmsClient;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
+    //队列名
+    @Value("${item.rabbitmq.exchange}")
+    private String EXCHANGE_NAME;
+    //路由key
+    @Value("${item.rabbitmq.routingKey}")
+    private String ROUTINGKEY;
     @Override
     public PageVo queryPage(QueryCondition params) {
         IPage<SpuInfoEntity> page = this.page(
@@ -98,6 +108,17 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         // 2 保存相关 sku 相关信息
         saveSkuAndSale(spuInfoVo, spuId);
+
+        //发送消息
+        sendMsg("insert",spuId);
+
+    }
+
+    /**
+     * 发送消息到消息队列
+     */
+    public void sendMsg(String type,Long spuId){
+        amqpTemplate.convertAndSend(EXCHANGE_NAME,ROUTINGKEY + type,spuId);
 
     }
 
