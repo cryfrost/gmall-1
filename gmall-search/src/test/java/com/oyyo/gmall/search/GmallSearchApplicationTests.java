@@ -102,7 +102,7 @@ class GmallSearchApplicationTests {
 //                        goodsEntity.setPic(skuInfoEntity.getSkuDefaultImg());
 
                         //查询skuImage 设置查询结果图片
-                        Resp<String> skuImgs = pmsClient.getSkuImgs(skuInfoEntity.getSkuId());
+                        Resp<String> skuImgs = pmsClient.querySkuImgsBySkuId(skuInfoEntity.getSkuId());
                         //接口返回  用 ，分隔的字符串  前端需要用，号解析
                         goodsEntity.setPic(skuImgs.getData());
 //                        skuInfoEntity.geti

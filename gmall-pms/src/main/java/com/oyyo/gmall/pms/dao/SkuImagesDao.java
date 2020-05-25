@@ -16,5 +16,5 @@ import java.util.List;
 @Mapper
 public interface SkuImagesDao extends BaseMapper<SkuImagesEntity> {
 
-    List<String> querySkuImgsBySkuId(String skuId);
+    List<String> querySkuImgsBySkuId(Long skuId);
 }

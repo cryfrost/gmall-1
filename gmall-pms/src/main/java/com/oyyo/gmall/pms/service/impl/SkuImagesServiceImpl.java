@@ -42,7 +42,7 @@ public class SkuImagesServiceImpl extends ServiceImpl<SkuImagesDao, SkuImagesEnt
      * @return
      */
     @Override
-    public String querySkuImgsBySkuId(String skuId) {
+    public String querySkuImgsBySkuId(Long skuId) {
 
         List<String> skuImgs = skuImagesDao.querySkuImgsBySkuId(skuId);
         skuImgs.forEach(System.out::println);

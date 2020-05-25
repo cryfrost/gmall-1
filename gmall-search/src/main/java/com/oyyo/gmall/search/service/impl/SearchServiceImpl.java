@@ -271,7 +271,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         //构建高亮
-        sourceBuilder.highlighter(new HighlightBuilder().field("title").preTags("<em>").postTags("</em>"));
+        sourceBuilder.highlighter(new HighlightBuilder().field("title").preTags("<em style='color:#e4393c'>").postTags("</em>"));
 
         //构建聚合 p品牌聚合
         TermsAggregationBuilder brandAggregation = AggregationBuilders.terms("brandIdAgg").field("brandId")

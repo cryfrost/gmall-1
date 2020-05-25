@@ -17,7 +17,7 @@ public class SkuTest {
 
     @Test
     void testImg() {
-        String s = skuImagesService.querySkuImgsBySkuId("61");
+        String s = skuImagesService.querySkuImgsBySkuId(61l);
         System.out.println(s);
     }
 }

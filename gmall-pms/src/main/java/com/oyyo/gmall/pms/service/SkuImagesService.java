@@ -17,6 +17,6 @@ public interface SkuImagesService extends IService<SkuImagesEntity> {
 
     PageVo queryPage(QueryCondition params);
 
-    String querySkuImgsBySkuId(String skuId);
+    String querySkuImgsBySkuId(Long skuId);
 }
 

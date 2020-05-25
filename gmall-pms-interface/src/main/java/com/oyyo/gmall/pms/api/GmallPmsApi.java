@@ -21,7 +21,7 @@ public interface GmallPmsApi {
      * @return
      */
     @GetMapping("pms/skuimages/getImgs/{skuId}")
-     Resp<String> querySkuImgsBySkuId(@PathVariable("skuId") String skuId) ;
+     Resp<String> querySkuImgsBySkuId(@PathVariable("skuId") Long skuId) ;
     /**
      * 列表
      */

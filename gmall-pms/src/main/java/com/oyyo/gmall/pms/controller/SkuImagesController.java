@@ -45,7 +45,7 @@ public class SkuImagesController {
     @ApiOperation("获取imgs")
     @GetMapping("/getImgs/{skuId}")
     @PreAuthorize("hasAnyAuthority('pms:shuimages:listImgs')")
-    public Resp<String> querySkuImgsBySkuId(@PathVariable("skuId") String skuId) {
+    public Resp<String> querySkuImgsBySkuId(@PathVariable("skuId") Long skuId) {
         String imgsUri = skuImagesService.querySkuImgsBySkuId(skuId);
 
 

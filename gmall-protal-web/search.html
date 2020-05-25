@@ -305,22 +305,22 @@
                     <li class="yui3-u-1-5" v-for="(goods,index) in goodsList" :key="index">
                         <div class="list-wrap">
                             <div class="p-img">
-                                <a href="item.html" target="_blank"><img :src="goods.pic" height="200"/></a>
+                                <a href="item.html" target="_blank"><img :src="goods.selected" height="200"/></a>
                                 <ul class="skus">
-                                    <li class="selected"><img :src="goods.pic"></li>
-                                    <li class=""><img :src="goods.pic"></li>
-                                    <li class=""><img :src="goods.pic"></li>
+                                    <li :class="{selected: goods.selected == goodsPic}" v-for="(goodsPic,j) in goods.pic" :key="j" @mouseOver="goods.selected=goodsPic">
+                                        <img :src="goodsPic">
+                                    </li>
                                 </ul>
                             </div>
                             <div class="clearfix"></div>
                             <div class="price">
                                 <strong>
                                     <em>¥</em>
-                                    <i>{{goods.price}}</i>
+                                    <i>{{ly.formatPrice(goods.price)}}</i>
                                 </strong>
                             </div>
                             <div class="attr">
-                                <em>{{goods.title}}</em>
+                                <em  v-html="goods.title.length > 30 ? goods.title.substring(0,30) : goods.title "></em>
                             </div>
                             <div class="cu">
                                 <em><span>促</span>满一件可参加超值换购</em>
@@ -463,6 +463,7 @@
     var vm = new Vue({
         el: "#searchApp",
         data: {
+            ly,
             searchParam:{
                 keyword:""
             },
@@ -481,7 +482,11 @@
         methods: {
           loadData(){
               ly.http.post("search/page",this.searchParam).then(({data}) => {
-                      this.goodsList = data.data.products;
+                  data.data.products.forEach(goods => {
+                          goods.pic = goods.pic.split(',');
+                          goods.selected = goods.pic[0];
+                      });
+                  this.goodsList = data.data.products;
                      console.log("goodsList"+goodsList)
                   }
               ).catch()
