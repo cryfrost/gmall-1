@@ -14,7 +14,11 @@ import java.util.List;
 public interface GmallPmsApi {
     @PostMapping("pms/spuinfo/page")
     Resp<List<SpuInfoEntity>> querySpusByPage(@RequestBody QueryCondition queryCondition);
-
+    /**
+     * 信息
+     */
+    @GetMapping("pms/spuinfo/info/{id}")
+    Resp<SpuInfoEntity> querySpuById(@PathVariable("id") Long id);
     /**
      * 查询 sku 所有图片
      * @param skuId

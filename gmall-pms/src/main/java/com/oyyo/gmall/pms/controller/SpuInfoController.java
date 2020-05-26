@@ -66,7 +66,7 @@ public class SpuInfoController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{id}")
     @PreAuthorize("hasAuthority('pms:spuinfo:info')")
-    public Resp<SpuInfoEntity> info(@PathVariable("id") Long id){
+    public Resp<SpuInfoEntity> querySpuById(@PathVariable("id") Long id){
 		SpuInfoEntity spuInfo = spuInfoService.getById(id);
 
         return Resp.ok(spuInfo);

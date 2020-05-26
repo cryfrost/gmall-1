@@ -19,13 +19,14 @@ import com.oyyo.gmall.pms.vo.BaseAttrVO;
 import com.oyyo.gmall.pms.vo.SkuInfoVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
 import com.oyyo.gmall.sms.vo.SkuSaleVO;
+import io.seata.spring.annotation.GlobalTransactional;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -35,8 +36,8 @@ import java.util.stream.Collectors;
 
 
 @Service("spuInfoService")
+@Slf4j
 public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> implements SpuInfoService {
-
     @Autowired
     private SpuInfoDao spuInfoDao;
     @Autowired
@@ -98,7 +99,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * @param spuInfoVo
      */
     @Override
-    @Transactional
+    @GlobalTransactional
     public void saveGoodsInfo(SpuInfoVo spuInfoVo) {
 
         //1 保存spu相关信息
@@ -110,6 +111,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         saveSkuAndSale(spuInfoVo, spuId);
 
         //发送消息
+        log.info("//发送消息");
         sendMsg("insert",spuId);
 
     }
@@ -118,7 +120,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      * 发送消息到消息队列
      */
     public void sendMsg(String type,Long spuId){
+        log.info("发送消息开始 msg为：" + spuId + "__type为：" + type);
         amqpTemplate.convertAndSend(EXCHANGE_NAME,ROUTINGKEY + type,spuId);
+        log.info("发送消息结束 EXCHANGE_NAME：" + EXCHANGE_NAME + "__ROUTINGKEY：" + ROUTINGKEY + "__type为：" + type);
 
     }
 
