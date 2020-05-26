@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.oyyo.gmall.pms.entity.CategoryEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.pms.vo.CategoryVO;
+
+import java.util.List;
 
 
 /**
@@ -16,5 +19,7 @@ import com.oyyo.core.bean.QueryCondition;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageVo queryPage(QueryCondition params);
+
+    List<CategoryVO> querySubCategories(Long pid);
 }
 

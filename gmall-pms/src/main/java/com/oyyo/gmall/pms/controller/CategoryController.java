@@ -6,6 +6,7 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.pms.entity.CategoryEntity;
 import com.oyyo.gmall.pms.service.CategoryService;
+import com.oyyo.gmall.pms.vo.CategoryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,19 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
+
+    /**
+     * 根据父分类id 查询子分类集合
+     * @param pid
+     * @return
+     */
+    @GetMapping("{pid}")
+    public Resp<List<CategoryVO>> querySubCategories(@PathVariable("pid") Long pid){
+
+        List<CategoryVO> categoryVOS = categoryService.querySubCategories(pid);
+
+        return Resp.ok(categoryVOS);
+    }
 
     /**
      * 分类查询

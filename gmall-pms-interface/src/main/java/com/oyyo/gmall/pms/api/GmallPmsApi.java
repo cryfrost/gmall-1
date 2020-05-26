@@ -4,14 +4,39 @@ import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.pms.entity.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.oyyo.gmall.pms.vo.CategoryVO;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 public interface GmallPmsApi {
+
+    /**
+     * 查询一级分类下的 二级分类和三级分类
+     *
+     * @param pid
+     * @return
+     */
+    @GetMapping("pms/category/{pid}")
+    Resp<List<CategoryVO>> querySubCategories(@PathVariable("pid") Long pid);
+
+    /**
+     * 查询一级分类
+     *
+     * @param level
+     * @param pid
+     * @return
+     */
+    @GetMapping("pms/category")
+    Resp<List<CategoryEntity>> queryCategoriesByPidOrLevel(
+            @RequestParam(value = "level", defaultValue = "0") Integer level,
+            @RequestParam(value = "parentCid", required = false) Long pid);
+
+    /**
+     * 分页查询spu
+     * @param queryCondition
+     * @return
+     */
     @PostMapping("pms/spuinfo/page")
     Resp<List<SpuInfoEntity>> querySpusByPage(@RequestBody QueryCondition queryCondition);
     /**
