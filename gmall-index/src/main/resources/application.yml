@@ -7,7 +7,7 @@ spring:
         server-addr: 122.51.113.141:8848
   redis:
     host: 121.36.130.137
-# 设置ribbon超时时间
+# 璁剧疆ribbon瓒呮椂鏃堕棿
 ribbon:
   ReadTimeout: 200000
   ConnectTimeout: 200000
