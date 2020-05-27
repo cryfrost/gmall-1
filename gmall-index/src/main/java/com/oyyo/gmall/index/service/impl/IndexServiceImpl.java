@@ -13,6 +13,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -48,7 +50,8 @@ public class IndexServiceImpl implements IndexService {
         //3 查完之后设置缓存
         List<CategoryVO> categoryVOS = listResp.getData();
         log.info("设置缓存");
-        redisTemplate.opsForValue().set(KEY_PREFIX + pid,JSON.toJSONString(categoryVOS));
+        redisTemplate.opsForValue().set(KEY_PREFIX + pid,JSON.toJSONString(categoryVOS),3 + new Random().nextInt(5), TimeUnit.DAYS);
+
         return categoryVOS;
 
     }
