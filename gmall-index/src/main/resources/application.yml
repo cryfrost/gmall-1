@@ -11,3 +11,5 @@ spring:
 ribbon:
   ReadTimeout: 200000
   ConnectTimeout: 200000
+redisson:
+  uri: redis://121.36.130.137:6379
