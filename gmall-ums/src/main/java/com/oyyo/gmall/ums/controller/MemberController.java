@@ -34,7 +34,7 @@ public class MemberController {
     /**
      * 数据校验
      * @param data
-     * @param type
+     * @param type 1-用户名 2-手机号 3-邮箱
      * @return
      */
     @GetMapping("check/{data}/{type}")
