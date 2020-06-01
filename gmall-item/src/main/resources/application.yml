@@ -1,0 +1,11 @@
+server:
+  port: 8088
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 122.51.113.141:8848
+# 设置ribbon超时时间
+ribbon:
+  ReadTimeout: 200000
+  ConnectTimeout: 200000

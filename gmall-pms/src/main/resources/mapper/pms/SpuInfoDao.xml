@@ -12,7 +12,7 @@
         <result property="brandId" column="brand_id"/>
         <result property="publishStatus" column="publish_status"/>
         <result property="createTime" column="create_time"/>
-        <result property="uodateTime" column="uodate_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
 

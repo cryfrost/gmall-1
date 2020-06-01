@@ -60,7 +60,7 @@ public class SpuInfoEntity implements Serializable {
 	/**
 	 * 
 	 */
-	@ApiModelProperty(name = "uodateTime",value = "")
-	private Date uodateTime;
+	@ApiModelProperty(name = "updateTime",value = "")
+	private Date updateTime;
 
 }

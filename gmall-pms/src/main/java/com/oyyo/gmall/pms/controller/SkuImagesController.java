@@ -1,5 +1,6 @@
 package com.oyyo.gmall.pms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
@@ -12,8 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-
-
+import java.util.List;
 
 
 /**
@@ -29,6 +29,17 @@ import java.util.Arrays;
 public class SkuImagesController {
     @Autowired
     private SkuImagesService skuImagesService;
+
+    /**
+     * 根据skuId 查询 图片列表
+     * @param skuId
+     * @return
+     */
+    @GetMapping("{skuId}")
+    public Resp<List<SkuImagesEntity>> querySkuImagesBySkuId(@PathVariable("skuId")Long skuId){
+        List<SkuImagesEntity> skuImagesEntities = skuImagesService.list(new QueryWrapper<SkuImagesEntity>().eq("sku_id",skuId));
+        return Resp.ok(skuImagesEntities);
+    }
 
     /**
      * 列表

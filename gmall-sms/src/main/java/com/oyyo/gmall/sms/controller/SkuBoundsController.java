@@ -5,6 +5,7 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.sms.entity.SkuBoundsEntity;
 import com.oyyo.gmall.sms.service.SkuBoundsService;
+import com.oyyo.gmall.sms.vo.SalseVO;
 import com.oyyo.gmall.sms.vo.SkuSaleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,8 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-
-
+import java.util.List;
 
 
 /**
@@ -31,11 +31,29 @@ public class SkuBoundsController {
     @Autowired
     private SkuBoundsService skuBoundsService;
 
+    /**
+     * 保存营销信息
+     * @param skuSaleVO
+     * @return
+     */
     @PostMapping("sku/sale/save")
     public Resp<Object> saveSaleInfo(@RequestBody SkuSaleVO skuSaleVO){
         skuBoundsService.saveSaleInfo(skuSaleVO);
         return Resp.ok(null);
     }
+
+    /**
+     * 查询营销信息
+     * @param skuId
+     * @return
+     */
+    @GetMapping("{skuId}")
+    public Resp<List<SalseVO>> querySkuSalseBySkuId(@PathVariable("skuId")Long skuId){
+
+        List<SalseVO> salseVOS = skuBoundsService.querySkuSalseBySkuId(skuId);
+        return Resp.ok(salseVOS);
+    }
+
     /**
      * 列表
      */

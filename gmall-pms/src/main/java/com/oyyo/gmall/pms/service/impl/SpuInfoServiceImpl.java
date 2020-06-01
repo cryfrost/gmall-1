@@ -198,7 +198,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private Long saveSpuInfo(SpuInfoVo spuInfoVo) {
         //|_ 保存spuInfo
         spuInfoVo.setCreateTime(new Date());
-        spuInfoVo.setUodateTime(spuInfoVo.getCreateTime());
+        spuInfoVo.setUpdateTime(spuInfoVo.getCreateTime());
         save(spuInfoVo);
         return spuInfoVo.getId();
     }

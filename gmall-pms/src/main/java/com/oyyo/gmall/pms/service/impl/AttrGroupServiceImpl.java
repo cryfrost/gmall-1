@@ -9,11 +9,14 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.gmall.pms.dao.AttrAttrgroupRelationDao;
 import com.oyyo.gmall.pms.dao.AttrDao;
 import com.oyyo.gmall.pms.dao.AttrGroupDao;
+import com.oyyo.gmall.pms.dao.ProductAttrValueDao;
 import com.oyyo.gmall.pms.entity.AttrAttrgroupRelationEntity;
 import com.oyyo.gmall.pms.entity.AttrEntity;
 import com.oyyo.gmall.pms.entity.AttrGroupEntity;
+import com.oyyo.gmall.pms.entity.ProductAttrValueEntity;
 import com.oyyo.gmall.pms.service.AttrGroupService;
 import com.oyyo.gmall.pms.vo.GroupVO;
+import com.oyyo.gmall.pms.vo.ItemGroupVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,8 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     @Autowired
     private AttrDao attrDao;
+    @Autowired
+    private ProductAttrValueDao attrValueDao;
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -88,6 +93,26 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         return groupEntities.stream().map(attrGroupEntity ->
             queryGroupWithAttrByGid(attrGroupEntity.getAttrGroupId())
         ).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<ItemGroupVO> queryItemGroupVOByCidAndSpuId(Long cid, Long spuId) {
+        List<AttrGroupEntity> attrGroupEntities = list(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", cid));
+
+        return attrGroupEntities.stream().map(group -> {
+            ItemGroupVO itemGroupVO = new ItemGroupVO();
+            itemGroupVO.setGroupName(group.getAttrGroupName());
+
+            //查询中间表
+            List<AttrAttrgroupRelationEntity> relationEntities = relationDao.selectList(new QueryWrapper<AttrAttrgroupRelationEntity>().eq("attr_group_id", group.getAttrGroupId()));
+            //规格参数id
+            List<Long> attrIds = relationEntities.stream().map(AttrAttrgroupRelationEntity::getAttrId).collect(Collectors.toList());
+            List<ProductAttrValueEntity> productAttrValueEntities = attrValueDao.selectList(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId).in("attr_id", attrIds));
+
+            itemGroupVO.setProductAttrs(productAttrValueEntities);
+            return itemGroupVO;
+        }).collect(Collectors.toList());
 
     }
 

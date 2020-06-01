@@ -5,6 +5,8 @@ import com.oyyo.gmall.pms.entity.SkuSaleAttrValueEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 
+import java.util.List;
+
 
 /**
  * sku销售属性&值
@@ -16,5 +18,12 @@ import com.oyyo.core.bean.QueryCondition;
 public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity> {
 
     PageVo queryPage(QueryCondition params);
+
+    /**
+     * 查询sku销售属性
+     * @param spuId
+     * @return
+     */
+    List<SkuSaleAttrValueEntity> querySkuSalesAttrValuesBySpuId(Long spuId);
 }
 

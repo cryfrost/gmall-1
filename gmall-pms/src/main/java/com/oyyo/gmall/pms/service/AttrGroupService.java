@@ -5,6 +5,7 @@ import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.gmall.pms.entity.AttrGroupEntity;
 import com.oyyo.gmall.pms.vo.GroupVO;
+import com.oyyo.gmall.pms.vo.ItemGroupVO;
 
 import java.util.List;
 
@@ -25,5 +26,13 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     GroupVO queryGroupWithAttrByGid(Long gid);
 
     List<GroupVO> queryGroupWithAttrsByCatId(Long catId);
+
+    /**
+     * 查询规格参数及分组
+     * @param cid
+     * @param spuId
+     * @return
+     */
+    List<ItemGroupVO> queryItemGroupVOByCidAndSpuId(Long cid, Long spuId);
 }
 

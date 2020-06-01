@@ -6,6 +6,7 @@ import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.pms.entity.AttrGroupEntity;
 import com.oyyo.gmall.pms.service.AttrGroupService;
 import com.oyyo.gmall.pms.vo.GroupVO;
+import com.oyyo.gmall.pms.vo.ItemGroupVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,18 @@ import java.util.List;
 public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
+
+    /**
+     * 规格参数及组 的值 api接口
+     * @param cid
+     * @param spuId
+     * @return
+     */
+    @GetMapping("item/group/{cid}/{spuId}")
+    public Resp<List<ItemGroupVO>> queryItemGroupVOByCidAndSpuId(@PathVariable("cid")Long cid,@PathVariable("spuId")Long spuId){
+        List<ItemGroupVO> itemGroupVOS = attrGroupService.queryItemGroupVOByCidAndSpuId(cid,spuId);
+        return Resp.ok(itemGroupVOS);
+    }
 
     /**
      * 查询分类下的组及规格参数

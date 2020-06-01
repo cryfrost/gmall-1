@@ -1,22 +1,18 @@
 package com.oyyo.gmall.pms.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.entity.SkuSaleAttrValueEntity;
+import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.pms.entity.SkuSaleAttrValueEntity;
-import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
-
-
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -32,6 +28,18 @@ import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
 public class SkuSaleAttrValueController {
     @Autowired
     private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    /**
+     * 查询sku销售属性
+     * @param spuId
+     * @return
+     */
+    @GetMapping("{spuId}")
+    public Resp<List<SkuSaleAttrValueEntity>> querySkuSalesAttrValuesBySpuId(@PathVariable("spuId")Long spuId){
+        List<SkuSaleAttrValueEntity> saleAttrValueEntities = skuSaleAttrValueService.querySkuSalesAttrValuesBySpuId(spuId);
+        return Resp.ok(saleAttrValueEntities);
+    }
+
 
     /**
      * 列表

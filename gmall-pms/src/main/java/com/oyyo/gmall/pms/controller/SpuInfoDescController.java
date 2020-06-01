@@ -1,20 +1,17 @@
 package com.oyyo.gmall.pms.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.entity.SpuInfoDescEntity;
+import com.oyyo.gmall.pms.service.SpuInfoDescService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.pms.entity.SpuInfoDescEntity;
-import com.oyyo.gmall.pms.service.SpuInfoDescService;
+import java.util.Arrays;
 
 
 
@@ -52,7 +49,7 @@ public class SpuInfoDescController {
     @ApiOperation("详情查询")
     @GetMapping("/info/{spuId}")
     @PreAuthorize("hasAuthority('pms:spuinfodesc:info')")
-    public Resp<SpuInfoDescEntity> info(@PathVariable("spuId") Long spuId){
+    public Resp<SpuInfoDescEntity> querySpuDescBySpuId(@PathVariable("spuId") Long spuId){
 		SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(spuId);
 
         return Resp.ok(spuInfoDesc);

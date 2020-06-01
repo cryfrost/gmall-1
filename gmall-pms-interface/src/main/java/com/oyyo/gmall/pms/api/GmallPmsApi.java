@@ -5,6 +5,7 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.pms.entity.*;
 import com.oyyo.gmall.pms.vo.CategoryVO;
+import com.oyyo.gmall.pms.vo.ItemGroupVO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,6 +52,21 @@ public interface GmallPmsApi {
      */
     @GetMapping("pms/skuimages/getImgs/{skuId}")
      Resp<String> querySkuImgsBySkuId(@PathVariable("skuId") Long skuId) ;
+
+    /**
+     * 根据skuId 查询 sku信息
+     */
+    @GetMapping("pms/skuinfo/info/{skuId}")
+    Resp<SkuInfoEntity> querySkuBySkuId(@PathVariable("skuId") Long skuId);
+
+    /**
+     * 根据skuId 查询图片列表
+     * @param skuId
+     * @return
+     */
+    @GetMapping("pms/skuimages/{skuId}")
+    Resp<List<SkuImagesEntity>> querySkuImagesBySkuId(@PathVariable("skuId")Long skuId);
+
     /**
      * 列表
      */
@@ -80,5 +96,30 @@ public interface GmallPmsApi {
 
     @GetMapping("pms/productattrvalue/{spuId}")
     Resp<List<ProductAttrValueEntity>> querySearchAttrValueBySpuId(@PathVariable("spuId")Long spuId);
+
+    /**
+     * 查询sku销售属性
+     *
+     * @param spuId
+     * @return
+     */
+    @GetMapping("pms/skusaleattrvalue/{spuId}")
+    Resp<List<SkuSaleAttrValueEntity>> querySkuSalesAttrValuesBySpuId(@PathVariable("spuId") Long spuId);
+
+    /**
+     * 查询海报信息
+     */
+    @GetMapping("pms/spuinfodesc/info/{spuId}")
+    Resp<SpuInfoDescEntity> querySpuDescBySpuId(@PathVariable("spuId") Long spuId);
+
+    /**
+     * 规格参数及组 的值 api接口
+     *
+     * @param cid
+     * @param spuId
+     * @return
+     */
+    @GetMapping("pms/attrgroup/item/group/{cid}/{spuId}")
+    Resp<List<ItemGroupVO>> queryItemGroupVOByCidAndSpuId(@PathVariable("cid") Long cid, @PathVariable("spuId") Long spuId);
 
 }
