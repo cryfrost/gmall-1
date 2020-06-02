@@ -1,0 +1,3 @@
+spring:
+  redis:
+    host: http://121.36.130.137

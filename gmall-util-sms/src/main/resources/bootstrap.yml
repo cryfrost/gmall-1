@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: util-sms-service
+  cloud:
+    nacos:
+      config:
+        server-addr: 122.51.113.141:8848
+        namespace: 30923beb-df4f-4f0d-b554-40ab5bdd4228
+        group: dev
+        file-extension: yml
+

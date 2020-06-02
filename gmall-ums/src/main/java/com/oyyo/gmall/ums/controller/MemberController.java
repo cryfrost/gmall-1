@@ -5,6 +5,7 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.ums.entity.MemberEntity;
 import com.oyyo.gmall.ums.service.MemberService;
+import com.oyyo.gmall.ums.vo.RegisterVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,23 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+
+    /**
+     * 注册功能
+     * @param registerVO
+     * @return
+     */
+    @PostMapping("register")
+    public Resp<Boolean> register(RegisterVO registerVO){
+        Boolean result = memberService.register(registerVO);
+        return Resp.ok(result);
+    }
+
+    @PostMapping("code")
+    public Resp<Boolean> sendSmsCode(@RequestParam("phone") String phone){
+        Boolean result = memberService.sendSmsCode(phone);
+        return Resp.ok(result);
+    }
 
     /**
      * 数据校验

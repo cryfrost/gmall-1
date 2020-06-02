@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.oyyo.gmall.ums.entity.MemberEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.ums.vo.RegisterVO;
 
 
 /**
@@ -24,5 +25,19 @@ public interface MemberService extends IService<MemberEntity> {
      * @return
      */
     Boolean checkData(String data, Integer type);
+
+    /**
+     * 用户注册
+     * @param registerVO
+     * @return
+     */
+    Boolean register(RegisterVO registerVO);
+
+    /**
+     * 发送短信验证码
+     * @param phone
+     * @return
+     */
+    Boolean sendSmsCode(String phone);
 }
 
