@@ -7,7 +7,6 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.oyyo.core.bean.Resp;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +25,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("pms/oss")
-@PropertySource("classpath:myConfigProperties/myconfig.properties")
 public class OssController {
     @Value("${oos.accessId}")
     private String accessId;
