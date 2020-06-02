@@ -61,6 +61,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     //路由key
     @Value("${item.rabbitmq.routingKey}")
     private String ROUTINGKEY;
+
+
     @Override
     public PageVo queryPage(QueryCondition params) {
         IPage<SpuInfoEntity> page = this.page(

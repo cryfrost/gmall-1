@@ -31,7 +31,7 @@ public class CommonSendSmsUtils {
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
         request.setSysDomain("dysmsapi.aliyuncs.com");
-        request.setSysVersion("2020-06-02");
+        request.setSysVersion("2017-05-25");
         request.setSysAction("SendSms");
         request.putQueryParameter("RegionId", regionId);
         request.putQueryParameter("PhoneNumbers", phoneNumbers);

@@ -1,11 +1,10 @@
 spring:
   application:
-    name: util-sms-service
+    name: sendSms-service
   cloud:
     nacos:
       config:
         server-addr: 122.51.113.141:8848
-        namespace: 30923beb-df4f-4f0d-b554-40ab5bdd4228
+        namespace: 0b96c1b4-5076-4cca-8246-078107167af7
         group: dev
         file-extension: yml
-

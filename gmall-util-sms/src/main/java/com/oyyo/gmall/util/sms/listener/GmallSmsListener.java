@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -58,7 +59,9 @@ public class GmallSmsListener {
                     log.info("短信类型错误！type=【{}】",type);
                     return;
             }
-            CommonResponse commonResponse = sendSmsUtils.sendSms(phone, templateCodeDesc, JSON.toJSONString(code));
+            Map<String,String> verifyCode = new HashMap<>();
+            verifyCode.put("code",code);
+            CommonResponse commonResponse = sendSmsUtils.sendSms(phone, templateCodeDesc, JSON.toJSONString(verifyCode));
             log.info("短信发送返回结果:{}",commonResponse.getData());
         }
 
