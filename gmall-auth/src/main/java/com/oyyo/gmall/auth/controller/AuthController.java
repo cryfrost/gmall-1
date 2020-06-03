@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @ClassName: AuthController
  * @Description: TODO
@@ -29,8 +32,9 @@ public class AuthController {
      * @return
      */
     @PostMapping("accredit")
-    public Resp<Boolean> accredit(@RequestParam("username")String username,@RequestParam("password")String password){
-        Boolean result = authService.accredit(username,password);
+    public Resp<Boolean> accredit(@RequestParam("username")String username, @RequestParam("password")String password,
+                                  HttpServletRequest request, HttpServletResponse response){
+        Boolean result = authService.accredit(username,password,request,response);
         return Resp.ok(result);
     }
 }
