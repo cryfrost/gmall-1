@@ -34,10 +34,11 @@ public interface MemberService extends IService<MemberEntity> {
     Boolean register(RegisterVO registerVO);
 
     /**
-     * 发送短信验证码
-     * @param phone
+     * 查询用户信息
      * @return
+     * @param username
+     * @param password
      */
-    Boolean sendSmsCode(String phone);
+    MemberEntity queryUser(String username, String password);
 }
 

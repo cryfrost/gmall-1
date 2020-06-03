@@ -36,10 +36,10 @@ public class SendSmsServiceImpl implements SendSmsService {
             return "error";
         }
         //先查询缓存中是否存在
-        String result = redisTemplate.opsForValue().get(KEY_PREFIX + phone);
+        Boolean hasKey = redisTemplate.hasKey(KEY_PREFIX + phone);
         //如果存在 则返回false 前台拿到数据判断 --说明3分钟之内已经发送过短信
-        if (StringUtils.isNotBlank(result)) {
-            log.info("三分钟之内发送过短信验证码，" + result);
+        if (hasKey) {
+            log.info("三分钟之内发送过短信验证码" );
             return "false";
         }
         //生成验证吗
@@ -80,7 +80,7 @@ public class SendSmsServiceImpl implements SendSmsService {
      * @return
      */
     public static String getVerifyCode() {
-        return (int) ((Math.random() * 9 + 1) * 100000)+"";
+        return (int) (((Math.random() * Math.random()) * 1000000))+"";
     }
 
 }

@@ -31,6 +31,19 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    /**
+     * 查询用户信息
+     * @param username
+     * @param password
+     * @return
+     */
+    @GetMapping("query")
+    public Resp<MemberEntity> queryUser(@RequestParam("username")String username,@RequestParam("password")String password){
+
+        MemberEntity memberEntity = memberService.queryUser(username,password);
+
+        return Resp.ok(memberEntity);
+    }
 
     /**
      * 注册功能
@@ -40,12 +53,6 @@ public class MemberController {
     @PostMapping("register")
     public Resp<Boolean> register(RegisterVO registerVO){
         Boolean result = memberService.register(registerVO);
-        return Resp.ok(result);
-    }
-
-    @PostMapping("code")
-    public Resp<Boolean> sendSmsCode(@RequestParam("phone") String phone){
-        Boolean result = memberService.sendSmsCode(phone);
         return Resp.ok(result);
     }
 

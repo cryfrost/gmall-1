@@ -1,0 +1,19 @@
+server:
+  port: 8089
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 122.51.113.141:8848
+# 设置ribbon超时时间
+ribbon:
+  ReadTimeout: 200000
+  ConnectTimeout: 200000
+#jwt 配置
+gmall:
+  jwt:
+    pubKeyPath: C:\\tmp\\rsa\\rsa.pub # 公钥地址
+    priKeyPath: C:\\tmp\\rsa\\rsa.pri # 私钥地址
+    secret: sf3423jsdf#3$@FDS32
+    expire: 30 # 过期时间,单位分钟
+    cookieName: GMALL_TOKEN
