@@ -1,5 +1,6 @@
 package com.oyyo.gmall.pms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
@@ -30,7 +31,7 @@ public class SkuSaleAttrValueController {
     private SkuSaleAttrValueService skuSaleAttrValueService;
 
     /**
-     * 查询sku销售属性
+     * 查询spu销售属性
      * @param spuId
      * @return
      */
@@ -40,6 +41,16 @@ public class SkuSaleAttrValueController {
         return Resp.ok(saleAttrValueEntities);
     }
 
+    /**
+     * 查询sku销售属性
+     * @param skuId
+     * @return
+     */
+    @GetMapping("sku/{skuId}")
+    public Resp<List<SkuSaleAttrValueEntity>> querySkuSalesAttrValuesBySkuId(@PathVariable("skuId")Long skuId){
+        List<SkuSaleAttrValueEntity> skuSaleAttrValueEntities = skuSaleAttrValueService.list(new QueryWrapper<SkuSaleAttrValueEntity>().eq("sku_id",skuId));
+        return Resp.ok(skuSaleAttrValueEntities);
+    }
 
     /**
      * 列表

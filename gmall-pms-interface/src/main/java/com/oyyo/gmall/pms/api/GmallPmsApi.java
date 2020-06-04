@@ -107,6 +107,15 @@ public interface GmallPmsApi {
     Resp<List<SkuSaleAttrValueEntity>> querySkuSalesAttrValuesBySpuId(@PathVariable("spuId") Long spuId);
 
     /**
+     * 查询sku销售属性
+     *
+     * @param skuId
+     * @return
+     */
+    @GetMapping("pms/skusaleattrvalue/sku/{skuId}")
+    Resp<List<SkuSaleAttrValueEntity>> querySkuSalesAttrValuesBySkuId(@PathVariable("skuId") Long skuId);
+
+    /**
      * 查询海报信息
      */
     @GetMapping("pms/spuinfodesc/info/{spuId}")
