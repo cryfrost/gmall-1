@@ -19,6 +19,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,7 @@ public class CartService {
     private StringRedisTemplate redisTemplate;
 
     private static final String KEY_PREFIX = "gmall:cart:";
+    private static final String PRICE_PREFIX = "gmall:sku:";
 
     /**
      * 添加购物车
@@ -51,19 +54,7 @@ public class CartService {
      */
     public Boolean addCart(CartVO cartVO) {
 
-        String key = KEY_PREFIX;
-
-        //获取用户登录信息
-        UserInfo userInfo = LoginInterceptor.getThreadLoclUserInfo();
-        if (userInfo.getUserId() != null) {
-            //已登录
-            log.info("用户已登录");
-            key += userInfo.getUserId();
-        } else {
-            //未登录
-            log.info("用户未登录");
-            key += userInfo.getUserKey();
-        }
+        String key = getLoginStatus();
         String skuId = cartVO.getSkuId().toString();
         Integer count = cartVO.getCount();
         //购物车业务逻辑
@@ -114,12 +105,15 @@ public class CartService {
             if (!CollectionUtils.isEmpty(wareSkuEntities)) {
                 cartVO.setStore(wareSkuEntities.stream().anyMatch(wareSkuEntity -> wareSkuEntity.getStock() > 0));
             }
+            //保存当前价格
+            redisTemplate.opsForValue().set(PRICE_PREFIX + skuId,skuInfoEntity.getPrice().toString());
         }
         //重新写入
         log.info("写入购物车");
         hashOps.put(skuId,JSON.toJSONString(cartVO));
         return true;
     }
+
 
     /**
      * 查询购物车
@@ -135,7 +129,12 @@ public class CartService {
         List<Object> cartJsonList = unLoginHashOps.values();
         List<CartVO> unLoginCarts = null;
         if (!CollectionUtils.isEmpty(cartJsonList)) {
-            unLoginCarts = cartJsonList.stream().map(cartJson -> JSON.parseObject(cartJson.toString(), CartVO.class)).collect(Collectors.toList());
+            unLoginCarts = cartJsonList.stream().map(cartJson -> {
+                CartVO cart = JSON.parseObject(cartJson.toString(), CartVO.class);
+                String currentPrice = redisTemplate.opsForValue().get(PRICE_PREFIX + cart.getSkuId());
+                cart.setCurrentPrice(new BigDecimal(currentPrice));
+                return cart;
+            }).collect(Collectors.toList());
         }
 
         //判断是否登录
@@ -159,12 +158,99 @@ public class CartService {
                     cartVO.setCount(cartVO.getCount() + count);
                 }
                 loginHashOps.put(cartVO.getSkuId().toString(),JSON.toJSONString(cartVO));
-                unLoginHashOps.put(unLoginKey,JSON.toJSONString(null));
-                log.info("同步完毕，删除未登录购物车信息");
+//                unLoginHashOps.put(unLoginKey,JSON.toJSONString(null));
             });
+            Boolean deleteFlag = redisTemplate.delete(unLoginKey);
+            log.info("同步完毕，删除未登录购物车信息-[{}]",deleteFlag);
+
         }
+        List<Object> loginCartJsonList = loginHashOps.values();
+        List<CartVO> cartVOList = loginCartJsonList.stream().map(cartJson -> {
+            CartVO cart = JSON.parseObject(cartJson.toString(), CartVO.class);
+            //查询当前价格
+            String currentPrice = redisTemplate.opsForValue().get(PRICE_PREFIX + cart.getSkuId());
+            cart.setCurrentPrice(new BigDecimal(currentPrice));
+            return cart;
+        }).collect(Collectors.toList());
+
+        return cartVOList;
+    }
+
+    /**
+     * 更新购物车数量
+     * @param cartVO
+     * @return
+     */
+    public Boolean updateCartCount(CartVO cartVO) {
+        String key = getLoginStatus();
+        BoundHashOperations<String, Object, Object> hashOperations = redisTemplate.boundHashOps(key);
+
+        Integer count = cartVO.getCount();
+        //判断更新的这条记录，在购物车中有没有
+        if (hashOperations.hasKey(cartVO.getSkuId().toString())) {
+
+            String cartJson = hashOperations.get(cartVO.getSkuId().toString()).toString();
+            cartVO = JSON.parseObject(cartJson,CartVO.class);
+            cartVO.setCount(count);
+            //更新数量
+            hashOperations.put(cartVO.getSkuId().toString(),JSON.toJSONString(cartVO));
+            log.info("更新数量完成，count=[{}]",cartVO.getCount());
+            return true;
+        }
+        log.info("需要更新的记录不存在购物车中");
+        return false;
+    }
+
+    /**
+     * 删除购物车
+     * @param skuIds
+     * @return
+     */
+    public Boolean deleteCart(List<Long> skuIds) {
+        String key = getLoginStatus();
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(key);
+        //批量删除
+        skuIds.forEach(skuId -> {
+            if (hashOps.hasKey(skuId.toString())) {
+                log.info("删除购物车，skuId=[{}]",skuId);
+                hashOps.delete(skuId.toString());
+            }
+        });
+        return true;
+    }
 
 
-        return null;
+    public static void main(String[] args) {
+
+    List list = new ArrayList<>();
+        list.add(1);
+        list.add(1);
+        list.add(1);
+        list.add(1);
+        System.out.println(list.toString());
+    }
+
+
+
+
+    /**
+     * 获取用户登录状态key
+     * @return
+     */
+    private String getLoginStatus() {
+        String key = KEY_PREFIX;
+
+        //获取用户登录信息
+        UserInfo userInfo = LoginInterceptor.getThreadLoclUserInfo();
+        if (userInfo.getUserId() != null) {
+            //已登录
+            log.info("用户已登录");
+            key += userInfo.getUserId();
+        } else {
+            //未登录
+            log.info("用户未登录");
+            key += userInfo.getUserKey();
+        }
+        return key;
     }
 }

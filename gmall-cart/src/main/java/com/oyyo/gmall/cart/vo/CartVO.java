@@ -13,6 +13,8 @@ public class CartVO {
     private String title;
     private String defaultImage;
     private BigDecimal price;
+    //当前价格
+    private BigDecimal currentPrice;
     private Integer count;
     private Boolean store;
     private List<SkuSaleAttrValueEntity> saleAttrValues;

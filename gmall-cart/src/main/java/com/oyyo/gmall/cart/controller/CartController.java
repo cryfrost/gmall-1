@@ -37,4 +37,25 @@ public class CartController {
         return Resp.ok(carts);
     }
 
+    /**
+     * 更新购物车数量
+     * @return
+     */
+    @PostMapping("update")
+    public Resp<Boolean> updateCartCount(@RequestBody CartVO cartVO){
+        Boolean result = cartService.updateCartCount(cartVO);
+        return Resp.ok(result);
+    }
+
+    /**
+     * 删除购物车
+     * @param skuIds
+     * @return
+     */
+    @PostMapping("delete")
+    public Resp<Boolean> deleteCart(@RequestBody List<Long> skuIds){
+        Boolean delResult = cartService.deleteCart(skuIds);
+        return Resp.ok(delResult);
+    }
+
 }
