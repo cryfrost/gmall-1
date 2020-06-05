@@ -19,5 +19,13 @@
         <result property="weight" column="weight"/>
     </resultMap>
 
+    <update id="updateCurrentPrice">
+        UPDATE
+            pms_sku_info
+        SET
+            price = #{currentPrice}
+        WHERE
+            sku_id = #{skuId}
+    </update>
 
 </mapper>

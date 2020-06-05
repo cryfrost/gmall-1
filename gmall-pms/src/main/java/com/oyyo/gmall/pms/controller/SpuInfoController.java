@@ -5,9 +5,11 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.pms.entity.SpuInfoEntity;
 import com.oyyo.gmall.pms.service.SpuInfoService;
+import com.oyyo.gmall.pms.vo.SpuInfoPriceVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -90,8 +92,12 @@ public class SpuInfoController {
     @ApiOperation("修改")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('pms:spuinfo:update')")
-    public Resp<Object> update(@RequestBody SpuInfoEntity spuInfo){
-		spuInfoService.updateById(spuInfo);
+    public Resp<Object> update(@RequestBody SpuInfoPriceVO spuInfoPriceVO){
+
+        SpuInfoEntity spuInfo = new SpuInfoEntity();
+        BeanUtils.copyProperties(spuInfoPriceVO,spuInfo);
+
+        spuInfoService.updateSpu(spuInfo,Long.parseLong(spuInfoPriceVO.getSpuCurrentPrice().toString()));
 
         return Resp.ok(null);
     }

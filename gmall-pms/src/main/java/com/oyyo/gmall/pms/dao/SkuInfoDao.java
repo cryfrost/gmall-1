@@ -1,7 +1,7 @@
 package com.oyyo.gmall.pms.dao;
 
-import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SkuInfoDao extends BaseMapper<SkuInfoEntity> {
-	
+
+    Boolean updateCurrentPrice(Long skuId, Long currentPrice);
+
 }

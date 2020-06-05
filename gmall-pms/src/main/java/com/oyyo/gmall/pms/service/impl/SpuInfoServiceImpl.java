@@ -6,15 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.Query;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.pms.controller.SkuInfoController;
 import com.oyyo.gmall.pms.dao.SkuInfoDao;
 import com.oyyo.gmall.pms.dao.SpuInfoDao;
 import com.oyyo.gmall.pms.dao.SpuInfoDescDao;
 import com.oyyo.gmall.pms.entity.*;
 import com.oyyo.gmall.pms.feign.GmallSmsClient;
-import com.oyyo.gmall.pms.service.ProductAttrValueService;
-import com.oyyo.gmall.pms.service.SkuImagesService;
-import com.oyyo.gmall.pms.service.SkuSaleAttrValueService;
-import com.oyyo.gmall.pms.service.SpuInfoService;
+import com.oyyo.gmall.pms.service.*;
 import com.oyyo.gmall.pms.vo.BaseAttrVO;
 import com.oyyo.gmall.pms.vo.SkuInfoVO;
 import com.oyyo.gmall.pms.vo.SpuInfoVo;
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +54,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private GmallSmsClient gmallSmsClient;
     @Autowired
     private AmqpTemplate amqpTemplate;
+    @Autowired
+    private SkuInfoController skuInfoController;
+
+    @Autowired
+    private SkuInfoService skuInfoService;
 
     //队列名
     @Value("${item.rabbitmq.exchange}")
@@ -203,6 +208,29 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         spuInfoVo.setUpdateTime(spuInfoVo.getCreateTime());
         save(spuInfoVo);
         return spuInfoVo.getId();
+    }
+
+
+
+    @Override
+    public void updateSpu(SpuInfoEntity spuInfo, Long spuCurrentPrice) {
+        boolean updateFlag = updateById(spuInfo);
+        if (updateFlag) {
+            Resp<List<SkuInfoEntity>> skuResp = skuInfoController.querySkusBySpuId(spuInfo.getId());
+            List<SkuInfoEntity> skuInfoEntities = skuResp.getData();
+            List<Boolean> skuFlag = new ArrayList<>();
+            skuInfoEntities.forEach(sku -> {
+                Boolean flag = skuInfoService.updateCurrentPrice(sku.getSkuId(), spuCurrentPrice);
+                skuFlag.add(flag);
+            });
+            boolean contains = skuFlag.contains(false);
+            log.info("是否有更新失败的sku：[{}]",contains);
+            //发送消息
+            String type = "update";
+            sendMsg(type,spuInfo.getId());
+            log.info("发送消息,type=[{}],spuId=[{}]",type,spuInfo.getId());
+
+        }
     }
 
 }

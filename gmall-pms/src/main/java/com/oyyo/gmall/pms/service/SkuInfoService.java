@@ -1,9 +1,9 @@
 package com.oyyo.gmall.pms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 
 
 /**
@@ -16,5 +16,7 @@ import com.oyyo.core.bean.QueryCondition;
 public interface SkuInfoService extends IService<SkuInfoEntity> {
 
     PageVo queryPage(QueryCondition params);
+
+    Boolean updateCurrentPrice(Long skuId, Long currentPrice);
 }
 
