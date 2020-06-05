@@ -10,6 +10,10 @@
     <el-form-item label="商品描述" prop="spuDescription">
       <el-input v-model="dataForm.spuDescription" placeholder="商品描述"></el-input>
     </el-form-item>
+    <el-form-item label="商品价格" prop="spuCurrentPrice">
+      <el-input v-model="dataForm.spuCurrentPrice" placeholder="商品价格"></el-input>
+    </el-form-item>
+
     <el-form-item label="所属分类id" prop="catalogId">
       <el-input v-model="dataForm.catalogId" placeholder="所属分类id"></el-input>
     </el-form-item>
@@ -23,7 +27,7 @@
       <el-input v-model="dataForm.createTime" placeholder=""></el-input>
     </el-form-item>
     <el-form-item label="" prop="uodateTime">
-      <el-input v-model="dataForm.uodateTime" placeholder=""></el-input>
+      <el-input v-model="dataForm.updateTime" placeholder=""></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -42,11 +46,12 @@
           id: 0,
           spuName: '',
           spuDescription: '',
+          spuCurrentPrice:0,
           catalogId: '',
           brandId: '',
           publishStatus: '',
           createTime: '',
-          uodateTime: ''
+          updateTime: ''
         },
         dataRule: {
           spuName: [
@@ -54,6 +59,9 @@
           ],
           spuDescription: [
             { required: true, message: '商品描述不能为空', trigger: 'blur' }
+          ],
+          spuCurrentPrice: [
+            { required: true, message: '商品价格不能为空', trigger: 'blur' }
           ],
           catalogId: [
             { required: true, message: '所属分类id不能为空', trigger: 'blur' }
@@ -67,7 +75,7 @@
           createTime: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ],
-          uodateTime: [
+          updateTime: [
             { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
@@ -88,11 +96,12 @@
               if (data && data.code === 0) {
                 this.dataForm.spuName = data.data.spuName
                 this.dataForm.spuDescription = data.data.spuDescription
+                this.dataForm.spuCurrentPrice = data.data.spuCurrentPrice
                 this.dataForm.catalogId = data.data.catalogId
                 this.dataForm.brandId = data.data.brandId
                 this.dataForm.publishStatus = data.data.publishStatus
                 this.dataForm.createTime = data.data.createTime
-                this.dataForm.uodateTime = data.data.uodateTime
+                this.dataForm.updateTime = data.data.updateTime
               }
             })
           }
@@ -109,11 +118,12 @@
                 'id': this.dataForm.id || undefined,
                 'spuName': this.dataForm.spuName,
                 'spuDescription': this.dataForm.spuDescription,
+                'spuCurrentPrice': this.dataForm.spuCurrentPrice,
                 'catalogId': this.dataForm.catalogId,
                 'brandId': this.dataForm.brandId,
                 'publishStatus': this.dataForm.publishStatus,
                 'createTime': this.dataForm.createTime,
-                'uodateTime': this.dataForm.uodateTime
+                'updateTime': this.dataForm.updateTime
               })
             }).then(({data}) => {
               if (data && data.code === 0) {
