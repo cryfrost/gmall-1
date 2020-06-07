@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.oyyo.gmall.wms.entity.WareSkuEntity;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
+import com.oyyo.gmall.wms.vo.SkuLockVO;
+
+import java.util.List;
 
 
 /**
@@ -16,5 +19,12 @@ import com.oyyo.core.bean.QueryCondition;
 public interface WareSkuService extends IService<WareSkuEntity> {
 
     PageVo queryPage(QueryCondition params);
+
+    /**
+     * 查询商品库存并锁定
+     * @param skuLockVOS
+     * @return
+     */
+    String checkAndLockStore(List<SkuLockVO> skuLockVOS);
 }
 

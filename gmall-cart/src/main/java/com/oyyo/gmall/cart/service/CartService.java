@@ -2,12 +2,12 @@ package com.oyyo.gmall.cart.service;
 
 import com.alibaba.fastjson.JSON;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.core.bean.UserInfo;
 import com.oyyo.gmall.cart.feign.GmallPmsClient;
 import com.oyyo.gmall.cart.feign.GmallSmsClient;
 import com.oyyo.gmall.cart.feign.GmallWmsClient;
 import com.oyyo.gmall.cart.interceptors.LoginInterceptor;
 import com.oyyo.gmall.cart.vo.CartVO;
-import com.oyyo.gmall.cart.vo.UserInfo;
 import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import com.oyyo.gmall.pms.entity.SkuSaleAttrValueEntity;
 import com.oyyo.gmall.sms.vo.SalseVO;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -219,20 +218,6 @@ public class CartService {
         return true;
     }
 
-
-    public static void main(String[] args) {
-
-    List list = new ArrayList<>();
-        list.add(1);
-        list.add(1);
-        list.add(1);
-        list.add(1);
-        System.out.println(list.toString());
-    }
-
-
-
-
     /**
      * 获取用户登录状态key
      * @return
@@ -252,5 +237,22 @@ public class CartService {
             key += userInfo.getUserKey();
         }
         return key;
+    }
+
+    /**
+     * 查询已登录状态用户购物车
+     * @param userId
+     * @return
+     */
+    public List<CartVO> queryCheckCartsByUserId(Long userId) {
+        log.info("查询已登录状态用户id为：[{}] 的购物车",userId);
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(KEY_PREFIX + userId);
+        List<Object> cartJsonList = hashOps.values();
+        List<CartVO> cartList = cartJsonList.stream().map(cartJson ->
+                JSON.parseObject(cartJson.toString(), CartVO.class))
+                .filter(CartVO::getCheck)
+                .collect(Collectors.toList());
+        log.info("返回已登录状态用户id为：[{}] 的被选中的购物车",userId);
+        return cartList;
     }
 }

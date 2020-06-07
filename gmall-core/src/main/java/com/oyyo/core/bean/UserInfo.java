@@ -1,4 +1,4 @@
-package com.oyyo.gmall.cart.vo;
+package com.oyyo.core.bean;
 
 import lombok.Data;
 

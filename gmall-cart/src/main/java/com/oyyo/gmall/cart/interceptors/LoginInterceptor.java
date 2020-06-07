@@ -1,9 +1,9 @@
 package com.oyyo.gmall.cart.interceptors;
 
+import com.oyyo.core.bean.UserInfo;
 import com.oyyo.core.utils.CookieUtils;
 import com.oyyo.core.utils.JwtUtils;
 import com.oyyo.gmall.cart.config.JwtProperties;
-import com.oyyo.gmall.cart.vo.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

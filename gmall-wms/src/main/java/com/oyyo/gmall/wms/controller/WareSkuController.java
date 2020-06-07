@@ -6,8 +6,10 @@ import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
 import com.oyyo.gmall.wms.entity.WareSkuEntity;
 import com.oyyo.gmall.wms.service.WareSkuService;
+import com.oyyo.gmall.wms.vo.SkuLockVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,20 @@ import java.util.List;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+    /**
+     * 查询库存 并锁定
+     * @param skuLockVOS
+     * @return
+     */
+    @PostMapping
+    public Resp<Object> checkAndLockStore(@RequestBody List<SkuLockVO> skuLockVOS){
+        String msg = wareSkuService.checkAndLockStore(skuLockVOS);
+        if (StringUtils.isEmpty(msg)) {
+            return Resp.ok(true);
+        }
+        return Resp.fail(msg);
+    }
 
     /**
      * 查询某个sku的库存信息

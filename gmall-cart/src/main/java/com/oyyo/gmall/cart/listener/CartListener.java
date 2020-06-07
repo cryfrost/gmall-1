@@ -41,7 +41,7 @@ public class CartListener {
         Resp<List<SkuInfoEntity>> skusResp = pmsClient.querySkusBySpuId(spuId);
         List<SkuInfoEntity> skus = skusResp.getData();
         skus.forEach(skuInfoEntity -> {
-            log.info("同步skuId为:[{}] 的价格", spuId);
+            log.info("同步spuId为:[{}] 的价格:[{}]", spuId,skuInfoEntity.getPrice());
             redisTemplate.opsForValue().set(PRICE_PREFIX + skuInfoEntity.getSkuId(),skuInfoEntity.getPrice().toString());
         });
         log.info("同步完成");

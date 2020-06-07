@@ -1,22 +1,19 @@
 package com.oyyo.gmall.ums.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oyyo.core.bean.PageVo;
 import com.oyyo.core.bean.QueryCondition;
 import com.oyyo.core.bean.Resp;
+import com.oyyo.gmall.ums.entity.MemberReceiveAddressEntity;
+import com.oyyo.gmall.ums.service.MemberReceiveAddressService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.oyyo.gmall.ums.entity.MemberReceiveAddressEntity;
-import com.oyyo.gmall.ums.service.MemberReceiveAddressService;
-
-
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -32,6 +29,16 @@ import com.oyyo.gmall.ums.service.MemberReceiveAddressService;
 public class MemberReceiveAddressController {
     @Autowired
     private MemberReceiveAddressService memberReceiveAddressService;
+
+    /**
+     *查询用户收获地址列表
+     * @return
+     */
+    @GetMapping("{userId}")
+    public Resp<List<MemberReceiveAddressEntity>> queryAddressesByUserId(@PathVariable("userId")Long userId){
+        List<MemberReceiveAddressEntity> recevieAddressEneity = memberReceiveAddressService.list(new QueryWrapper<MemberReceiveAddressEntity>().eq("member_id", userId));
+        return Resp.ok(recevieAddressEneity);
+    }
 
     /**
      * 列表

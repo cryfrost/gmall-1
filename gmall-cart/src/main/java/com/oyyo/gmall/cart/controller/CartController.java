@@ -28,6 +28,18 @@ public class CartController {
     }
 
     /**
+     * 根据userId查询被选中的购物车信息
+     * @param userId
+     * @return
+     */
+    @GetMapping("{userId}")
+    public Resp<List<CartVO>> queryCheckCartsByUserId(@PathVariable("userId")Long userId){
+        List<CartVO> cartVOS = cartService.queryCheckCartsByUserId(userId);
+        return Resp.ok(cartVOS);
+
+    }
+
+    /**
      * 查询购物车
      * @return
      */
