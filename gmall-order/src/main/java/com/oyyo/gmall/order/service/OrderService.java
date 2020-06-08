@@ -19,7 +19,9 @@ import com.oyyo.gmall.ums.entity.MemberReceiveAddressEntity;
 import com.oyyo.gmall.wms.entity.WareSkuEntity;
 import com.oyyo.gmall.wms.vo.SkuLockVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
@@ -52,18 +56,21 @@ public class OrderService {
     private GmallUmsClient umsClient;
     @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     private static final String ORDER_TOKEN_PREFIX = "order:token";
-
+    @Value("${order.rabbitmq.exchange}")
+    private static String EXCHANGE;
+    @Value("${order.rabbitmq.routingKey}")
+    private static String ROUTINGKEY;
 
     /**
      * 订单确认页
      * @return
      */
     public OrderConfirmVO orderConfirm() {
-
         OrderConfirmVO confirmVO = new OrderConfirmVO();
-
         //获取登录状态
         UserInfo userInfo = LoginInterceptor.getThreadLocalUserInfo();
         Long userId = userInfo.getUserId();
@@ -72,8 +79,6 @@ public class OrderService {
             return null;
         }
         log.info("用户以登录，id为：[{}]",userId);
-
-
         CompletableFuture<Void> addressCompletableFuture = CompletableFuture.runAsync(() -> {
             //获取用户的收货地址列表,根据用户id查询收货地址列表
 
@@ -93,7 +98,6 @@ public class OrderService {
             }
             return cartList;
         }, threadPoolExecutor).thenAcceptAsync(cartList -> {
-
             List<OrderItemVo> itemVos = cartList.stream().map(cart -> {
                 OrderItemVo orderItemVo = new OrderItemVo();
                 Long skuId = cart.getSkuId();
@@ -110,7 +114,6 @@ public class OrderService {
                         orderItemVo.setTitle(skuInfoEntity.getSkuTitle());
                     }
                 }, threadPoolExecutor);
-
                 CompletableFuture<Void> salesAttrCompletableFuture = CompletableFuture.runAsync(() -> {
                     //销售属性
                     Resp<List<SkuSaleAttrValueEntity>> salesAttrValuesResp = pmsClient.querySkuSalesAttrValuesBySkuId(skuId);
@@ -120,7 +123,6 @@ public class OrderService {
                         orderItemVo.setSaleAttrValues(attrValueEntities);
                     }
                 }, threadPoolExecutor);
-
                 CompletableFuture<Void> wareSkuCompletableFuture = CompletableFuture.runAsync(() -> {
                     //库存信息
                     Resp<List<WareSkuEntity>> wareSkuResp = wmsClient.queryWareSkuBySkuId(skuId);
@@ -137,9 +139,7 @@ public class OrderService {
                     List<SalseVO> salses = salseResp.getData();
                     orderItemVo.setSales(salses);
                 }, threadPoolExecutor);
-
                 CompletableFuture.allOf(skuCompletableFuture, salesAttrCompletableFuture, wareSkuCompletableFuture, salseCompletableFuture).join();
-
                 return orderItemVo;
             }).collect(Collectors.toList());
             log.info("查询用户:【{}】购物车选中商品完成", userId);
@@ -226,8 +226,11 @@ public class OrderService {
             throw new OrderException("服务器错误，创建订单失败！");
         }
 
-
         //删除购物车 发送消息删除购物车
-
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userInfo.getUserId());
+        map.put("skuIds", items.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList()));
+        //发送消息删除购物车
+        amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEY,map);
     }
 }

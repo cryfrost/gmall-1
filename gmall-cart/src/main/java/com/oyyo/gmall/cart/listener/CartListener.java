@@ -7,10 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: 哦同步价格
@@ -28,7 +30,11 @@ public class CartListener {
     @Autowired
     private StringRedisTemplate redisTemplate;
     private static final String PRICE_PREFIX = "gmall:sku:";
-
+    private static final String KEY_PREFIX = "gmall:cart:";
+    /**
+     * 同步价格
+     * @param spuId
+     */
     @RabbitListener(bindings =@QueueBinding(
             value = @Queue(value = "${cart.rabbitmq.queuevalue}",durable = "true"),
             exchange = @Exchange(value = "${cart.rabbitmq.exchange}",type = ExchangeTypes.TOPIC,ignoreDeclarationExceptions = "true"),
@@ -45,6 +51,25 @@ public class CartListener {
             redisTemplate.opsForValue().set(PRICE_PREFIX + skuInfoEntity.getSkuId(),skuInfoEntity.getPrice().toString());
         });
         log.info("同步完成");
+    }
 
+    /**
+     * 删除购物车
+     * @param map
+     */
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "${cart.rabbitmq.queuevalueDel}",durable = "true"),
+            exchange = @Exchange(value = "${cart.rabbitmq.exchangeOrder}",type = ExchangeTypes.TOPIC,ignoreDeclarationExceptions = "true"),
+            key = {"${cart.rabbitmq.routingKeyDel}"}
+    ))
+    @RabbitHandler
+    public void deleteCartListener(Map<String, Object> map){
+        Long userId = (Long) map.get("userId");
+        List<String> skuIds = (List<String>) map.get("skuIds");
+        log.info("删除用户 id=[{}] 的购物车 skuIds=[{}]",userId,skuIds.toString());
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(KEY_PREFIX + userId);
+        Long deleteFlag = hashOps.delete(skuIds.toArray());
+        log.info("删除了 [{}] 条",deleteFlag);
     }
 }
