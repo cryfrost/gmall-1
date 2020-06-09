@@ -14,7 +14,9 @@ import com.oyyo.gmall.wms.vo.SkuLockVO;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -34,8 +36,13 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     private WareSkuDao wareSkuDao;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+    @Value("${order.rabbitmq.exchange}")
+    private static String EXCHANGE ;
 
     private static final String KEY_PREFIX = "stock:lock";
+    private static final String ROUTINGKEY = "stock.ttl";
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -76,6 +83,13 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         }
         String orderToken = skuLockVOS.get(0).getOrderToken();
         redisTemplate.opsForValue().set(KEY_PREFIX + orderToken, JSON.toJSONString(skuLockVOS),16,TimeUnit.MINUTES);
+
+        //锁定成功发送延时消息，定时解锁
+
+        amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEY,orderToken);
+
+
+
         return "查询库存并锁定成功";
 
     }

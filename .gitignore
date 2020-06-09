@@ -3,6 +3,7 @@ target/
 myConfigProperties/
 gmall.iml
 **/*.iml
+*.iml
 #.gitignore
 # Compiled class file
 *.class

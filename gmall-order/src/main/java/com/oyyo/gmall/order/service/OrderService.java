@@ -241,5 +241,7 @@ public class OrderService {
         map.put("skuIds", items.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList()));
         //发送消息删除购物车
         amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEY,map);
+
+
     }
 }
