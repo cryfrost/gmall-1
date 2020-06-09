@@ -22,14 +22,19 @@ import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import com.oyyo.gmall.pms.entity.SpuInfoEntity;
 import com.oyyo.gmall.ums.entity.MemberEntity;
 import com.oyyo.gmall.ums.entity.MemberReceiveAddressEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 
 @Service("orderService")
+@Slf4j
 public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> implements OrderService {
 
     @Autowired
@@ -39,7 +44,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     private GmallPmsClient pmsClient;
     @Autowired
     private OrderItemDao orderItemDao;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+    @Autowired
+    private OrderDao orderDao;
 
+
+    @Value("${order.rabbitmq.exchange}")
+    private static String EXCHANGE;
+    @Value("${order.rabbitmq.routingKey}")
+    private static String ROUTINGKEY;
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -57,6 +71,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      * @return
      */
     @Override
+    @Transactional
     public OrderEntity saveOrder(OrderSubmitVO submitVO) {
         //保存订单
         OrderEntity orderEntity = new OrderEntity();
@@ -69,12 +84,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderEntity.setReceiverName(address.getName());
         orderEntity.setReceiverDetailAddress(address.getDetailAddress());
         orderEntity.setReceiverCity(address.getCity());
-
+        log.info("设置收货地址完成");
         //查询用户信息
         Resp<MemberEntity> memberEntityResp = umsClient.queryMemberById(submitVO.getUserId());
         MemberEntity memberEntity = memberEntityResp.getData();
         orderEntity.setMemberUsername(memberEntity.getUsername());
         orderEntity.setMemberId(submitVO.getUserId());
+        log.info("设置用户信息完成");
         //清算每个商品赠送的积分之和
         orderEntity.setIntegration(0);
         orderEntity.setGrowth(0);
@@ -92,10 +108,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderEntity.setPayAmount(submitVO.getTotalPrice());
         orderEntity.setDeliverySn(IdWorker.getIdStr());
         orderEntity.setAutoConfirmDay(15);
-
+        log.info("设置商品信息完成");
         //保存订单
         save(orderEntity);
-
+        log.info("保存订单完成");
         //保存订单详情
         Long orderId = orderEntity.getId();
         List<OrderItemVo> items = submitVO.getItems();
@@ -120,8 +136,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
             orderItemDao.insert(itemEntity);
         });
+        log.info("保存商品详情完成");
+
+        //订单创建之后在响应之前发送延时消息，以达到定时关单
+        amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEY,submitVO.getOrderToken());
+        log.info("订单创建完成，发送消息至延时队列");
 
         return orderEntity;
+    }
+
+    /**
+     * 关闭订单
+     * @return
+     */
+    @Override
+    public int closeOrder(String orderToken) {
+        int reslut = orderDao.closeOrder(orderToken);
+        return reslut;
     }
 
 }

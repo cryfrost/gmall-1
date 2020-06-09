@@ -1,5 +1,6 @@
 package com.oyyo.gmall.wms.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -30,6 +32,10 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     private RedissonClient redissonClient;
     @Autowired
     private WareSkuDao wareSkuDao;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    private static final String KEY_PREFIX = "stock:lock";
 
     @Override
     public PageVo queryPage(QueryCondition params) {
@@ -68,7 +74,8 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
 
             return "下单失败，商品库存不足:" + unLockSkuIds.toString();
         }
-
+        String orderToken = skuLockVOS.get(0).getOrderToken();
+        redisTemplate.opsForValue().set(KEY_PREFIX + orderToken, JSON.toJSONString(skuLockVOS),16,TimeUnit.MINUTES);
         return "查询库存并锁定成功";
 
     }

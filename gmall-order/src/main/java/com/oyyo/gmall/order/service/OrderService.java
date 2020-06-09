@@ -64,6 +64,11 @@ public class OrderService {
     private static String EXCHANGE;
     @Value("${order.rabbitmq.routingKey}")
     private static String ROUTINGKEY;
+    @Value("${order.rabbitmq.routingKeyUnlock}")
+    private static String ROUTINGKEYUNLOCK;
+
+
+
 
     /**
      * 订单确认页
@@ -209,6 +214,7 @@ public class OrderService {
             SkuLockVO skuLockVO = new SkuLockVO();
             skuLockVO.setSkuId(orderItemVo.getSkuId());
             skuLockVO.setCount(orderItemVo.getCount());
+            skuLockVO.setOrderToken(orderToken);
             return skuLockVO;
         }).collect(Collectors.toList());
 
@@ -222,6 +228,9 @@ public class OrderService {
         try {
             Resp<OrderEntity> orderEntityResp = omsClient.saveOrder(orderSubmitVO);
         } catch (Exception e) {
+            //解锁库存
+            log.info("创建订单失败，发送消息解锁库存,orderToken=[{}]",orderToken);
+            amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEYUNLOCK,orderToken);
             e.printStackTrace();
             throw new OrderException("服务器错误，创建订单失败！");
         }
