@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
             log.info("制作 token 完成,{}",token);
             //放入cookie
             log.info("放入cookie");
-            CookieUtils.setCookie(request,response,jwtProperties.getCookieName(),token,jwtProperties.getExpire());
+            CookieUtils.setCookie(request,response,jwtProperties.getCookieName(),token,30 * 60);
 
             return true;
 

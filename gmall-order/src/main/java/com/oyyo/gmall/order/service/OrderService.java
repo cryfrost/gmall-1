@@ -6,11 +6,11 @@ import com.oyyo.core.bean.UserInfo;
 import com.oyyo.core.exception.OrderException;
 import com.oyyo.gmall.cart.vo.CartVO;
 import com.oyyo.gmall.oms.entity.OrderEntity;
+import com.oyyo.gmall.oms.vo.OrderItemVo;
+import com.oyyo.gmall.oms.vo.OrderSubmitVO;
 import com.oyyo.gmall.order.feign.*;
 import com.oyyo.gmall.order.interceptors.LoginInterceptor;
 import com.oyyo.gmall.order.vo.OrderConfirmVO;
-import com.oyyo.gmall.oms.vo.OrderItemVo;
-import com.oyyo.gmall.oms.vo.OrderSubmitVO;
 import com.oyyo.gmall.pms.entity.SkuInfoEntity;
 import com.oyyo.gmall.pms.entity.SkuSaleAttrValueEntity;
 import com.oyyo.gmall.sms.vo.SalseVO;
@@ -21,7 +21,6 @@ import com.oyyo.gmall.wms.vo.SkuLockVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -60,15 +59,9 @@ public class OrderService {
     private AmqpTemplate amqpTemplate;
 
     private static final String ORDER_TOKEN_PREFIX = "order:token";
-    @Value("${order.rabbitmq.exchange}")
-    private static String EXCHANGE;
-    @Value("${order.rabbitmq.routingKey}")
-    private static String ROUTINGKEY;
-    @Value("${order.rabbitmq.routingKeyUnlock}")
-    private static String ROUTINGKEYUNLOCK;
-
-
-
+    private static final String EXCHANGE = "GMALL-ORDER-EXCHANGE";
+    private static final String ROUTINGKEY = "cart.delete";
+    private static final String ROUTINGKEYUNLOCK = "stok.unlock";
 
     /**
      * 订单确认页

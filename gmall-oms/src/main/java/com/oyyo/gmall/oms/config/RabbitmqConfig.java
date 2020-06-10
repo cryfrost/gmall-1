@@ -1,8 +1,9 @@
 package com.oyyo.gmall.oms.config;
 
 import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +13,8 @@ import java.util.Map;
 @Configuration
 public class RabbitmqConfig {
 
-    @Value("${order.rabbitmq.routingKey}")
-    private static String ROUTINGKEY;
+
+    private static final String ROUTINGKEY = "order.ttl";
 
     private static final String DEAD_LETTER_EXCHANGE = "order.dead.letter.exchange";
     private static final String DEAD_LETTER_QUEUEA_ROUTING_KEY = "order.dead";
@@ -21,7 +22,7 @@ public class RabbitmqConfig {
     private static final String ORDER_DEAD_QUEUE = "ORDER-DEAD-QUEUE";
 
 
-    @Bean(DELAY_QUEUEA_NAME)
+    @Bean("ORDER-TTL-QUEUE")
     public Queue ttlQueue(){
 
         Map<String, Object> args = new HashMap<>();
@@ -34,17 +35,35 @@ public class RabbitmqConfig {
         return new Queue(DELAY_QUEUEA_NAME ,true,false,false,args);
     }
 
-    @Bean(DELAY_QUEUEA_NAME)
+    //创建延时交换机
+    @Bean
+    public Exchange getDelayExchange() {
+        return ExchangeBuilder.directExchange(DEAD_LETTER_EXCHANGE).durable(true).build();
+    }
+
+    /**
+     * 延时队列 绑定 私信交换机
+     * @return
+     */
+    @Bean("ORDER-TTL-BINDING")
     public Binding ttlBinding(){
         return new Binding(DELAY_QUEUEA_NAME, Binding.DestinationType.QUEUE, DEAD_LETTER_EXCHANGE, ROUTINGKEY, null);
     }
 
-    @Bean(ORDER_DEAD_QUEUE)
+    /**
+     * 声明一个死信队列
+     * @return
+     */
+    @Bean("ORDER-DEAD-QUEUE")
     public Queue dlQueue(){
         return new Queue(ORDER_DEAD_QUEUE, true, false, false, null);
     }
 
-    @Bean("ORDER_DEAD_BINDING")
+    /**
+     * 绑定死信队列 到死信交换机
+     * @return
+     */
+    @Bean("ORDER-DEAD-BINDING")
     public Binding deadBinding(){
         return new Binding(ORDER_DEAD_QUEUE, Binding.DestinationType.QUEUE, DEAD_LETTER_EXCHANGE, DEAD_LETTER_QUEUEA_ROUTING_KEY, null);
     }

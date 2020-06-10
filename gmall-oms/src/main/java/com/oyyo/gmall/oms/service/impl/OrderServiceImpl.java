@@ -25,7 +25,6 @@ import com.oyyo.gmall.ums.entity.MemberReceiveAddressEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,11 +48,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Autowired
     private OrderDao orderDao;
 
-
-    @Value("${order.rabbitmq.exchange}")
-    private static String EXCHANGE;
-    @Value("${order.rabbitmq.routingKey}")
-    private static String ROUTINGKEY;
+    private static final String EXCHANGE = "GMALL-ORDER-EXCHANGE";
+    private static final String ROUTINGKEY = "order.ttl";
 
     @Override
     public PageVo queryPage(QueryCondition params) {

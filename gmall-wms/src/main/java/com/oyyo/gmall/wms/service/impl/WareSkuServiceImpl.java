@@ -16,7 +16,6 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -38,9 +37,8 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     private StringRedisTemplate redisTemplate;
     @Autowired
     private AmqpTemplate amqpTemplate;
-    @Value("${order.rabbitmq.exchange}")
-    private static String EXCHANGE ;
 
+    private static final String EXCHANGE = "GMALL-ORDER-EXCHANGE";
     private static final String KEY_PREFIX = "stock:lock";
     private static final String ROUTINGKEY = "stock.ttl";
 
@@ -98,7 +96,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         //开启分布式锁
         log.info("开启分布式锁");
         RLock lock = redissonClient.getLock("stok:" + skuLockVO.getSkuId());
-        lock.lock(100, TimeUnit.SECONDS);
+        lock.lock();
         //查询剩余库存是否足够
         List<WareSkuEntity> wareSkuEntities = wareSkuDao.checkStore(skuLockVO.getSkuId(),skuLockVO.getCount());
         if (!CollectionUtils.isEmpty(wareSkuEntities)) {
