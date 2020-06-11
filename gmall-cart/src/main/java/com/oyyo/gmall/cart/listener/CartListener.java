@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: 哦同步价格
@@ -66,10 +67,13 @@ public class CartListener {
     @RabbitHandler
     public void deleteCartListener(Map<String, Object> map){
         Long userId = (Long) map.get("userId");
-        List<String> skuIds = (List<String>) map.get("skuIds");
+        List<Object> skuIds = (List<Object>) map.get("skuIds");
         log.info("删除用户 id=[{}] 的购物车 skuIds=[{}]",userId,skuIds.toString());
         BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(KEY_PREFIX + userId);
-        Long deleteFlag = hashOps.delete(skuIds.toArray());
+        List<String> skus = skuIds.stream().map(skuId -> skuId.toString()).collect(Collectors.toList());
+        String[] ids = skus.toArray(new String[skus.size()]);
+
+        Long deleteFlag = hashOps.delete(ids);
         log.info("删除了 [{}] 条",deleteFlag);
     }
 }

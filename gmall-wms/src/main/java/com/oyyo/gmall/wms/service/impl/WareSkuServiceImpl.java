@@ -69,7 +69,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         List<SkuLockVO> unLockSku = skuLockVOS.stream().filter(skuLockVO -> skuLockVO.getLock() == false).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(unLockSku)) {
             //解锁已锁定商品
-            log.info("解锁已锁定商品");
+            log.info("锁定失败，解锁已锁定商品");
             List<SkuLockVO> lockSkuIds = skuLockVOS.stream().filter(SkuLockVO::getLock).collect(Collectors.toList());
             lockSkuIds.forEach(skuLockVO -> {
                 wareSkuDao.unLockStore(skuLockVO.getWareSkuId(),skuLockVO.getCount());
@@ -83,15 +83,17 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         redisTemplate.opsForValue().set(KEY_PREFIX + orderToken, JSON.toJSONString(skuLockVOS),16,TimeUnit.MINUTES);
 
         //锁定成功发送延时消息，定时解锁
-
+        log.info("锁定成功发送延时消息，定时解锁");
         amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEY,orderToken);
 
-
-
-        return "查询库存并锁定成功";
+        return "true";
 
     }
 
+    /**
+     * 检验并锁定库存
+     * @param skuLockVO
+     */
     private void lockStrore(SkuLockVO skuLockVO){
         //开启分布式锁
         log.info("开启分布式锁");
@@ -102,16 +104,14 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         if (!CollectionUtils.isEmpty(wareSkuEntities)) {
             //锁定库存
             Long id = wareSkuEntities.get(0).getId();
-            log.info("锁定id=[{}]库存",id);
+            log.info("锁定id=[{}]库存 数量=[{}]",id,skuLockVO.getCount());
             int result = wareSkuDao.lockStore(id, skuLockVO.getCount());
-            if (result > 0){
-                skuLockVO.setWareSkuId(id);
-                skuLockVO.setLock(true);
-            }
+            skuLockVO.setWareSkuId(id);
+            skuLockVO.setLock(true);
         } else {
             skuLockVO.setLock(false);
         }
-        log.info("解锁");
+        log.info("关闭分布式锁");
         lock.unlock();
     }
 

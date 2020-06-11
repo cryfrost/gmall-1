@@ -211,8 +211,9 @@ public class OrderService {
             return skuLockVO;
         }).collect(Collectors.toList());
 
+        //判断状态码
         Resp<Object> wareStoreResp = wmsClient.checkAndLockStore(lockVOS);
-        if (wareStoreResp.getCode() == 0) {
+        if (wareStoreResp.getCode() != 0) {
             throw new OrderException(wareStoreResp.getMsg());
         }
         log.info("创建订单（订单详情）");
@@ -227,12 +228,13 @@ public class OrderService {
             e.printStackTrace();
             throw new OrderException("服务器错误，创建订单失败！");
         }
-
+        log.info("创建订单（订单详情）");
         //删除购物车 发送消息删除购物车
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userInfo.getUserId());
         map.put("skuIds", items.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList()));
         //发送消息删除购物车
+        log.info("发送消息删除购物车=[{}]",map.toString());
         amqpTemplate.convertAndSend(EXCHANGE,ROUTINGKEY,map);
 
 

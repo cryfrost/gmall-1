@@ -48,7 +48,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Autowired
     private OrderDao orderDao;
 
-    private static final String EXCHANGE = "GMALL-ORDER-EXCHANGE";
+    private static final String EXCHANGE = "order.dead.letter.exchange";
     private static final String ROUTINGKEY = "order.ttl";
 
     @Override
